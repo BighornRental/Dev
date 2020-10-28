@@ -1,0 +1,62 @@
+html, body {
+    color: #555;
+    margin: 0;
+    padding: 0;
+}
+* {
+    box-sizing: border-box;
+}
+#navbar {
+    background-color: #444;
+    color: #fff;
+    padding: 1vh 20vw 1vh 20vw;
+    width: 100vw;
+}
+#navbar li {
+    display: inline;
+}
+#navbar a {
+    display: inline-block;
+    margin-right: 12px;
+    padding: 2px 9px;
+}
+#navbar a.current_page_link {
+    background-color: #ddd;
+    color: #444;
+}
+#container {
+    margin: 2vh 20vw 2vh 20vw;
+    width: 60vw;
+}
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: .5em;
+}
+.field {
+    margin-bottom: 2em;
+}
+input {
+    border: 1px solid #bbb;
+    box-shadow: inset 1px 1px 3px #00000022;
+    padding: 1em;
+    width: 100%;
+}
+
+button {
+    background-color: green;
+    border: 2px solid darkgreen;
+    box-shadow: 2px 2px 6px #00000066 ;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bolder;
+    padding: .5em 3em;
+}
+.help {
+    border: none !important;
+    font-size: .9em;
+}
+.is-danger {
+    border: 1px solid red;
+    color: red;
+}
