@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-
+<div id="container">
 <h1>Create Customer</h1>
 
 <form method="POST" action="/customers">
@@ -174,5 +174,5 @@
 
 </div>
 </form>
-
+</div>
 @endsection

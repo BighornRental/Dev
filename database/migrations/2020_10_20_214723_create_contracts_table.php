@@ -15,7 +15,8 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->unsignedBigInteger('customers_id')->nullable();
+            $table->unsignedBigInteger('contract_number');
             $table->string('dealer');
             $table->string('sales_person');
             $table->string('contract_state');
@@ -47,8 +48,10 @@ class CreateContractsTable extends Migration
             $table->float('inital_payment');
             $table->boolean('recurring_payment')->default(false);
             $table->boolean('paperless_billing')->default(false);
+            $table->boolean('signed')->default(false);
+            $table->boolean('intial_payment')->default(false);
             $table->timestamps();
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('SET NULL');
+            $table->foreign('customers_id')->references('id')->on('customers')->onDelete('SET NULL');
         });
     }
 

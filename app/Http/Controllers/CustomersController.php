@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customers;
+use App\Models\Contracts;
 
 class CustomersController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     //
     public function index() {
 
@@ -67,7 +73,7 @@ class CustomersController extends Controller
         // $customer->secondary_phone = request('secondary_phone');
         // $customer->email = request('email');
 
-        // $customer->save();
+            $customer->save();
 
         return redirect('/customers');
     }
@@ -122,5 +128,14 @@ class CustomersController extends Controller
 
         //delete the customer
 
+    }
+
+    public function contracts($customer) {
+
+        $customer = Customers::find($customer);
+    
+        $contracts = $customer->contracts; // hasMany contracts
+        
+        return view('contracts.index', ['contracts' => $contracts, 'customer' => $customer]);
     }
 }

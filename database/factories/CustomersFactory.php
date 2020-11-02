@@ -22,7 +22,7 @@ class CustomersFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => factory(App\Models\User::class),
+            'user_id' => 2,
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'phone' => $this->faker->phoneNumber,

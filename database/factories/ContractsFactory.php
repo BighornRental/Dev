@@ -24,7 +24,8 @@ class ContractsFactory extends Factory
     {
         return [
             'dealer' => "MSC",
-            'customer_id'=> $this->faker->biasedNumberBetween($min = 1, $max = 3, $function = 'sqrt'),
+            'customers_id'=> 7,
+            'contract_number' => $this->faker->biasedNumberBetween($min = 6, $max = 7, $function = 'sqrt'),
             'sales_person' => $this->faker->name,
             'contract_state' => $this->faker->state,
             'shipping_address' => $this->faker->streetAddress,
@@ -53,7 +54,9 @@ class ContractsFactory extends Factory
             'CRA_amount' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 100, $max = 1000),
             'inital_payment' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 999, $max = 9000),
             'recurring_payment' => $this->faker->boolean,
-            'paperless_billing' => $this->faker->boolean
+            'paperless_billing' => $this->faker->boolean,
+            'signed' => $this->faker->boolean,
+            'intial_payment' => $this->faker->boolean
         ];
     }
 }
