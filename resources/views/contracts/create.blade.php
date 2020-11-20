@@ -3,8 +3,7 @@
 @section('content')
 <div id="container">
     <h1>Create Contract</h1>
-
-    <form method="POST" action="/contracts">
+    <form method="POST" name="contract-form" id="contract-form" action="/contracts">
         @csrf
         <section class="form-section" id="contract_info">
             <h3>Contract Information</h3>
@@ -395,16 +394,18 @@
                         
                         <div class="control radio-control">
 
-                            <label for="condition-new">New Condition:</label>
-
-                            <input type="radio" name="product_condition" id="condition-new" value="new" />
+                            <label class="input-container">New Condition:
+                                <input type="radio" name="product_condition" id="condition-new" value="new" />
+                                <span class="checkmark cm-round"></span>
+                            </label>
                         </div>
 
                         <div class="control radio-control">
 
-                            <label for="condition-used">Use Condition:</label>
-
-                            <input type="radio" name="product_condition" id="condition-used" value="used" />
+                            <label class="input-container">Use Condition:
+                                <input type="radio" name="product_condition" id="condition-used" value="used" />
+                                <span class="checkmark cm-round"></span>
+                            </label>
 
                         </div>
 
@@ -491,7 +492,7 @@
             </div>
         </section>
         <section class="form-section"  id="reference">
-            <h3>Liablity Damage Waver “LDW”</h3>
+            <h3>Liability Damage Waver “LDW”</h3>
             <div class="inner-section">
 
                 <div class="form-row">
@@ -500,17 +501,18 @@
                         
                         <div class="control radio-control">
 
-                            <label for="accept">Accept:</label>
-
-                            <input type="radio" name="ldw" id="accept" value="accept" />
+                            <label class="input-container">Accept:
+                                <input type="radio" name="liability_damage_waver" id="accept" value="accept" />
+                                <span class="checkmark cm-round"></span>
+                            </label>
                         </div>
 
                         <div class="control radio-control">
 
-                            <label for="decline">Decline:</label>
-
-                            <input type="radio" name="ldw" id="decline" value="decline" />
-
+                            <label  class="input-container">Decline:
+                                <input type="radio" name="liability_damage_waver" id="decline" value="decline" />
+                                <span class="checkmark cm-round"></span>
+                            </label>
                         </div>
 
                     </div>
@@ -538,39 +540,135 @@
         <section class="form-section"  id="reference">
             <h3>Customer Reserve Account (OPTIONAL)</h3>
             <div class="inner-section">
-                <p>
-                    Use this calculator if the customer has a set amount of money that they would like to split between their initial payment and the CRA. Enter the total amount of the initial payment here: ORIGINAL INITAL PAYMENT: <input type="text" name="original_initial_payment" id="original_initial_payment" /> Enter CRA <input type="text" name="cra_amount" id="cra-amount" /> into the CRA field $ 204.28 for the customers total initial payment to equal $1000.00
-                </p>
+                <div class="form-row">
+                    <div class="field">
+                    <label for="original_initial_payment">Enter Down Payment: </label> 
+                    <div class="control">
+                    <input type="text" name="original_initial_payment" id="original_initial_payment" /> 
+                    </div>
+                    </div>
+    
+                    <div class="field">
+                    <label for="AdjDownPayment">Recacluate Payments: </label>
+                    <div class="control">
+                    <button value="Recacluate" id="AdjDownPayment" name="AdjDownPayment">Recacluate</button>
+                    </div>
+                     </div>
+                </div>
             </div>
         </section>
         <section class="form-section"  id="reference">
             <h3>Rental Payment</h3>
             <div class="inner-section">
+                <div class="form-row">
+                    <p>The monthly rental payment without CRA is  $<span id="payment-no-cra"></span> plus a monthly sales tax of  $<span class="tax-cra"></span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra"></span> for a total of  $<span id="no-ldw-total"></span></p>
+                </div>
+            <div class="form-row">
+                    <p>The monthly rental payment with CRA is  $<span id="payment-yes-cra"></span> plus a monthly sales tax of  $<span class="tax-cra"></span> plus optional Liability Damage Waiver fee of  $<span class="ldw-cra"></span> for a total of  <span id="yes-ldw-total"></span></p>
+            </div>
             </div>
         </section>
         <section class="form-section"  id="reference">
             <h3>Intial Payments</h3>
             <div class="inner-section">
+                <div class="form-row">
+                <ol>
+                    <li><label>Initial Rental Payment (2 Months): <input type="text" name="irp" id="irp" /></label></li>
+                    <li><label>Initial Sales Tax <input type="text" name="ist" id="ist" /></label></li>
+                    <li><label>Liability Damage Waiver <input type="text" name="ldw" id="ldw" /></label></li>
+                    <li><label>Customer Reserve Account <input type="text" name="cra" id="cra" /></label></li>
+                    <li><label>Delivery Charge <input type="text" name="dc" id="dc" /></label></li>
+                    <li><label>Total Initial Payment <input type="text" name="tip" id="tip" /></label></li>
+                </ol>
+                </div>
             </div>
         </section>
         <section class="form-section"  id="reference">
             <h3>Rental Purchasse Ownership</h3>
             <div class="inner-section">
+                 <div class="form-row">
+                    <p>At <span id="AgreeToTerms"></span> monthly rental payments, we will apply any balance in the CRA, plus tax, and you will own the property. You will have paid a Total Cost of <span id="ContractTotal"></span> not including LDW or tax. At any time you can do an early payoff by paying <span id="PayOff"></span> of the remaining payments plus tax for ownership.
+                    </p>
+                 </div>
             </div>
         </section>
         <section class="form-section"  id="reference">
             <h3>Initial Payment Authorization</h3>
             <div class="inner-section">
+                <div class="form-row">
+                    <div class="field">
+
+                            <label for="initial-pay-athorization">Initial Payment:</label> 
+                            
+                            <div class="control">
+
+                                <div class="input-group">
+                                    <span class="label-sufix">$</span>
+                                        <input @error('initial-pay-athorization') class="is-danger" @enderror type="text" id="initial-pay-athorization" name="initial-pay-athorization" value="{{old('initial-pay-athorization')}}" required />
+                                </div>
+                                @error('initial-pay-athorization')
+                                    <p class="help is-danger">{{ $errors->first('initial-pay-athorization') }}</p>
+                                @enderror
+
+                            </div>
+
+                        </div>
+               
+                    <div class="field">
+                        <x-payment-type />
+                    </div>
+                </div>
             </div>
         </section>
         <section class="form-section"  id="reference">
             <h3>Recurring Payment Authorization</h3>
             <div class="inner-section">
+                <div class="form-row">
+                    <div class="field">
+                        <label class="input-container">Would you like to sign up for recurring payments?
+                            <input type="checkbox" name="recurring-payment" id="recurring-payment" />
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="recurring-payment-type">Payment Type:</label>
+                        <select name="recurring-payment-type" id="recurring-payment-type">
+                            <option value="CC">Credit Card</option>
+                            <option value="ACH">ACH Card</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="recurring-payment-date">Payment Date:</label>
+                        <select name="recurring-payment-date" id="recurring-payment-date">
+                            <option value="1">1st</option>
+                            <option value="10">10th</option>
+                            <option value="15">15th</option>
+                            <option value="20">20th</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </section>
         <section class="form-section"  id="reference">
             <h3>Paperless Billing Authorization</h3>
+            <p>Please send all statements via email instead of postal?</p>
             <div class="inner-section">
+                <div class="form-row">
+                    <div class="field">
+                        <label class="input-container">Yes Please:
+                            <input type="radio" name="paperless-billing" id="paperless-billing-yes" />
+                            <span class="checkmark cm-round"></span>
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="input-container">No Thank:
+                        <input type="radio" name="paperless-billing" id="paperless-billing-no" />
+                        <span class="checkmark cm-round"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </section>
         

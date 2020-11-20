@@ -108,6 +108,7 @@ label {
     background-color: #aaa;
     color: #fff;
     display: inline-block;
+    font-size: 12pt;
     height: 100%;
     line-height: 1em;
     padding: 1em;
@@ -121,13 +122,68 @@ label {
 input {
     border: 1px solid #bbb;
     box-shadow: inset 1px 1px 3px #00000022;
-    padding: 1em;
+    font-size: 12pt;
+    padding: .9em;
     width: 100%;
 }
 input:disabled {
     background-color: transparent;
     border: none;
     box-shadow: none;
+}
+.input-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+.input-container input[type="checkbox"], .input-container input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.checkmark {
+    background-color: #fff;
+    border: 1px solid #bbb;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+}
+.cm-round {
+    border-radius: 50%;
+}
+.input-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+.input-container input:checked ~ .checkmark {
+    background-color:goldenrod;
+    border-color: #fff;
+    box-shadow: 2px 2px 3px #00000066;
+}
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.input-container input:checked ~ .checkmark:after {
+    display: block;
+}
+.input-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 select {
     border: 1px solid #bbb;
@@ -170,6 +226,9 @@ button {
     padding: 18px;
     text-transform: uppercase;
 }
+.form-section p {
+    margin-left: 18px;
+}
 .form-section .form-row {
     display: flex;
     flex-direction: row;
@@ -187,7 +246,9 @@ button {
 .text-shadow {
     text-shadow: 3px 3px 6px #000000aa;
 }
-
+.error {
+    background-color: red;
+}
 @media ( max-width: 800px) {
 
     .form-section .form-row {

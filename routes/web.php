@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\ContractsController;
+use App\Http\Controllers\CalcluatorController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -29,6 +30,7 @@ Route::put('/customers/{customer_id}', [CustomersController::class, 'update']);
 Route::get('/customers/{customer}/contracts', [CustomersController::class, 'contracts']);
 Route::get('/contracts/', [ContractsController::class, 'index']);
 Route::get('/contracts/create', [ContractsController::class, 'create']);
+Route::post('contracts/calculate', [CalcluatorController::class, 'calculate']);
 Route::get('/contracts/{contract}/delete', [ContractsController::class, 'destory']);
 Auth::routes();
 
