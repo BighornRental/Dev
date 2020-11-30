@@ -1,5 +1,3 @@
-//const { set } = require("lodash");
-
 var isError = 0;
 // corrects decimal point positions
 function dm(amount) 
@@ -24,17 +22,14 @@ function calculate()
 		TotalPrice = parseFloat($("#product_cash_price").val()),
 		DownPayment = $("#original_initial_payment").val(),
 		TaxRate = parseFloat($("#product_sales_tax").val()),
-		LDWMonthly = ($("input[name='ldw']:checked").val() == "accept") ? 8 : 0,
-		DeliveryCharge = ($("#product_delivery_charge").val() > 0) ? $("#product_delivery_charge").val() : 0;
-	
+		LDWMonthly = ($("input[name='liability_damage_waver']:checked").val() == "accept") ? 5.00 : 0.00,
+		DeliveryCharge = ($("#product_delivery_charge").val() > 0) ? parseFloat($("#product_delivery_charge").val()) : 0;
+		CustmerReserveAccount = ( $("#cra").val() > 0) ?  $("#cra").val() : 0;
 	
 	// label term length
-	//$("#TermLength").html(LoanTerm);
-
-	if (DownPayment == "") { DownPayment = 0;}
-	if (TaxRate == "") { TaxRate = 0;}
+	$("#AgreeToTerms").text(LoanTerm);
 	
-	// perform error checks
+	//perform error checks
 	// isError = 0;
 	// $("#product_cash_price").removeClass("error");
 	// if (IsNumeric(TotalPrice) == false) { 
@@ -57,7 +52,7 @@ function calculate()
 	TaxRate = (TaxRate >= 1) ? TaxRate / 100 : 0;
 	
 	// calculate FullPrice (Labeled as "Contract Initial Total")
-	var FullPrice = ( parseFloat(TotalPrice) + parseFloat(DeliveryCharge)) - DownPayment;
+	var FullPrice = ( !isNaN(TotalPrice) ) ? parseFloat( TotalPrice - CustmerReserveAccount ) : 0;
 	
 	// calculate EachPayment
 	var EachPayment = 0;
@@ -72,7 +67,7 @@ function calculate()
 	} else {
 		alert("Unable to determine contract term!");
 		return;
-	}
+	} 
 
 	// calculate Deposit
 	// var Deposit = 0;
@@ -86,24 +81,44 @@ function calculate()
 	
 	// calculate tax
 	//var TaxDeposit = dm(Math.round((eval(Deposit)) * TaxRate*100)/100);
-	var TaxPayment = dm(Math.round((eval(EachPayment)) * TaxRate*100)/100);
+	var TaxPayment = Math.round((eval(EachPayment)) * TaxRate*100)/100;
 	
 	// calculate total first months and total rest of the months
 	//TotalDeposit = dm(Deposit + TaxDeposit);
-	Month1 = dm(EachPayment + TaxPayment + DownPayment + LDWMonthly);
-	MonthRest = dm( EachPayment + TaxPayment + LDWMonthly );
-    
+	Month1 = (EachPayment + TaxPayment);
+	Month1 = Month1 + LDWMonthly;
+	//Month1 = Month1;
+	TotalCharge = Month1 * 2;
+	TotalCharge = TotalCharge + DeliveryCharge + parseFloat( $("#cra").val() );
+	//MonthRest = dm( EachPayment + TaxPayment + LDWMonthly );
 	// Set the values
-	$("#ContractTotal").text( dm(FullPrice)); 	
-	//$("#Deposit").val(dm(TotalDeposit));
-    $("#MonthlyPayment").val(dm(EachPayment));
-    $("#irp").val(dm(EachPayment*2)) 	
-	$("#ist").val(dm(TaxPayment)); 	
-	$("#Month1").val(dm(Month1)); 	
-	$("#MonthRest").val(dm(MonthRest)); 
+	//the inputs
+	$("#month1").val( (EachPayment + TaxPayment) * 2);
+    $("#irp").val(dm(EachPayment*2));
+	$("#ist").val(dm(TaxPayment*2)); 	
+	$("#ldw").val(dm(LDWMonthly*2));
+	$("#dc").val(DeliveryCharge);
+	$("#tip").val(dm(TotalCharge));
+	// end inputs
+
+	// no cra row
+	$("#payment-no-cra").text(dm(EachPayment)); 	
+	$(".tax-cra").text(TaxPayment);
+	$(".ldw-cra").text(dm(LDWMonthly));
+	$("#no-ldw-total").text(dm(Month1));
+	// end no cra row
+
+	// yes cra row
+	$("#payment-yes-cra").text(dm(EachPayment));
+	$("#yes-ldw-total").text(dm(EachPayment));
+	// yes cra row end
+
+	// agree to terms row
+	$("#ContractTotal").text( dm(EachPayment * LoanTerm)); 	
 	$("#AgreeToTerms").text(LoanTerm);
-	$("#ldw-monthly").val(LDWMonthly);	
-	//document.RTO.TotalPaid.value = dm(TotalPaid);
+	$("#PayOff").text();
+	// end agree to terms row
+
     
 }
 // sets error condition
@@ -127,13 +142,13 @@ function IsNumeric(val) {
 function reCalulatePayment() {
     
     //example 1000
-    var capturedExtraDownPayment = $("#original_initial_payment").val();
-    
-    if(capturedExtraDownPayment > $("#product_cash_price").val()) {
-        
-        showRecalcError("Down payment cannot be greater than cash price.",false);
-        
-        location.reload();
+    var capturedExtraDownPayment = parseFloat($("#original_initial_payment").val());
+	
+    if(capturedExtraDownPayment > parseFloat( $("#product_cash_price").val() )) {
+
+		alert("The down payment cannot be large than the total price.");
+		
+		return false;
         
     }
     
@@ -151,24 +166,34 @@ function reCalulatePayment() {
         dp = dp - i;
         
         //set down payment to a new lower value
-        $("#DownPayment").val(dp.toFixed(2));
+        $("#cra").val(dp.toFixed(2));
         
         calculate();
         
         //after calculations get values;
         
-        dps = parseFloat( $("#DownPayment").val() );
+        //dps = parseFloat( $("#original_initial_payment").val() );
         
-        mls = parseFloat( $("#Month1").val() );
-        
+        mls = parseFloat( $("#month1").val() );
         // when we reach with a $1 we go to cents
-        i = ((mls - 1) < capturedExtraDownPayment) ? .01 : 1;
+        i = ((dp + mls) - 1  < capturedExtraDownPayment) ? .01 : 1;
         
     }
-    
-    while( mls > capturedExtraDownPayment );
-    
-    
+	
+	while( (dp + mls) > capturedExtraDownPayment);
+    //while( mls < capturedExtraDownPayment );
+	
+	cra = parseFloat( $("#cra").val() );
+
+	if( (dp + mls) < capturedExtraDownPayment ) {
+		 $("#cra").val((cra + .01).toFixed(2));
+	} else if( (dp + mls) < capturedExtraDownPayment ) {
+		$("#cra").val((cra - .01).toFixed(2));
+	}
+	else {
+		$("#cra").val(cra);
+	}
+	calculate();
     //making sure the down payment is great than the initial payment
     if(dps < 0) {
         
@@ -198,13 +223,23 @@ jQuery(function($) {
         calculate();	
     });
     $("#product_cash_price").on('keyup',function() {
-		console.log('trying');
-		$.get('calculate',function(repsonse) {
-			console.log(repsonse);
-		})
+		// console.log('trying');
+		// $.get('calculate',function(repsonse) {
+		// 	console.log(repsonse);
+		// })
 		//calculate();
 			
-    });
+	});
+	$("#product_cash_price").on("focus", function(){
+		if($(this).val() == '0.00') {
+			$(this).val('');
+		}
+	})
+	$("#product_cash_price").on("blur", function(){
+		if( $(this).val() < 1 ) {
+			$(this).val('0.00');
+		}
+	})
     $("#product_cash_price").on('keyup',function() {
 		
 		calculate();	
@@ -214,25 +249,17 @@ jQuery(function($) {
 
         // correct tax rate field if user enters as a percent instead of a decimal.
         // don't do this on the keyup event.
-        var TaxRate = $("#product_sales_tax").val();
-        if (TaxRate >= 1) {
-            TaxRate = TaxRate / 100;
-            $("#product_sales_tax").val(TaxRate);
-        }
+        // var TaxRate = $("#product_sales_tax").val();
+        // if (TaxRate >= 1) {
+        //     TaxRate = TaxRate / 100;
+        //     $("#product_sales_tax").val(TaxRate);
+        // }
         calculate();
     });
 	$("#product_sales_tax").on('keyup',function() {
 
     	calculate();
     });
-    $("#original_initial_payment").on('change',function() {
-
-        calculate();	
-    });
-    $("#original_initial_payment").on('keyup',function() {
-		
-		calculate();	
-	});
 	
 	$("#product_delivery_charge").on("keyup", function () {
 
@@ -245,11 +272,15 @@ jQuery(function($) {
 		calculate();
 
    }); 
+
+   $("input[name='liability_damage_waver']").on("change", calculate )
+
    //calculate();
     
     $("#AdjDownPayment").on('click', function(event) { 
        
 		event.preventDefault();
+
         if($("#original_initial_payment").val() > 0 ) {
             
             reCalulatePayment(); 

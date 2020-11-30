@@ -38,6 +38,6 @@ use App\Models\Contracts;
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     @if(url()->current() == 'https://com.bighornrental:8890/contracts/create')
-        <script src="/js/bhr.js?version=3.4"></script>
+        <script src="/js/calculator.js?version=3.7"></script>
     @endif
 </html>

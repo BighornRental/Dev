@@ -20,9 +20,13 @@ jQuery(function($) {
                 $("#ldw").val(response.LDWMonthly);	
                 $("#tip").val(response.TotalIntialPayment);
                 $("#payment-no-cra").text(response.EachPayment);
+                $("#payment-yes-cra").text(response.EachPayment)
+                $("#cra").val(response.CRAccount);
                 $(".tax-cra").text(response.TaxPayment);
                 $(".ldw-cra").text(response.LDWMonthly);
-                $('#no-ldw-total').text(response.TotalIntialPayment);
+                $('#no-ldw-total').text(response.MonthRest);
+                $('#initial-pay-athorization').val(response.TotalIntialPayment);
+                $("#ContractTotal").text(response.TotalCost);
             }
         });
     }
@@ -45,6 +49,11 @@ jQuery(function($) {
     })
 
     $("input[name='liability_damage_waver']").on("change", function(){
+        calc();
+    })
+
+    $("#contract-form #AdjDownPayment").on("click", function(event) {
+        event.preventDefault();
         calc();
     })
 
