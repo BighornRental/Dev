@@ -11,7 +11,7 @@ use App\Models\Contracts;
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;0,900;1,300&display=swap" rel="stylesheet">
-        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=3.5" type="text/css" media="all" />
+        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=3.6" type="text/css" media="all" />
        
     </head>
     <body class="antialiased">

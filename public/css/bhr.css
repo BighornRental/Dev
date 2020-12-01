@@ -120,6 +120,7 @@ label {
     width: calc(100% - 4em);
 }
 input {
+    background-color: #fff;
     border: 1px solid #bbb;
     box-shadow: inset 1px 1px 3px #00000022;
     font-size: 12pt;
@@ -127,7 +128,6 @@ input {
     width: 100%;
 }
 input:disabled {
-    background-color: transparent;
     border: none;
     box-shadow: none;
 }

@@ -24,29 +24,12 @@ function calculate()
 		TaxRate = parseFloat($("#product_sales_tax").val()),
 		LDWMonthly = ($("input[name='liability_damage_waver']:checked").val() == "accept") ? 5.00 : 0.00,
 		DeliveryCharge = ($("#product_delivery_charge").val() > 0) ? parseFloat($("#product_delivery_charge").val()) : 0;
-		CustmerReserveAccount = ( $("#cra").val() > 0) ?  $("#cra").val() : 0;
+		CustmerReserveAccount = ( $("#cra").val() > 0) ?  $("#cra").val() : 0
+		TotalIntialPayment = 0, // this is the final charges
+		CRA = 0;
 	
 	// label term length
 	$("#AgreeToTerms").text(LoanTerm);
-	
-	//perform error checks
-	// isError = 0;
-	// $("#product_cash_price").removeClass("error");
-	// if (IsNumeric(TotalPrice) == false) { 
-	// 	error("#product_cash_price");
-	// }
-	// $("#product_sales_tax").removeClass("error");
-	// if (IsNumeric(TaxRate) == false) { 
-	// 	error("#product_sales_tax");
-	// }	
-	// $("#original_initial_payment").removeClass("error");
-	// if (IsNumeric(DownPayment) == false) { 
-	// 	console.log('original price error')
-	// 	error("#original_initial_payment");
-	// }
-	// if (isError == 1) {
-	// 	return;	
-	// }
 	
 	// correct tax rate if user enters as a percent instead of a decimal.
 	TaxRate = (TaxRate >= 1) ? TaxRate / 100 : 0;
@@ -67,38 +50,24 @@ function calculate()
 	} else {
 		alert("Unable to determine contract term!");
 		return;
-	} 
-
-	// calculate Deposit
-	// var Deposit = 0;
-	// if (EachPayment < 25) { 
-	// 	// min $25 deposit
-	// 	Deposit = 25;
-	// } else {
-	// 	// Deposit is 1 full payment
-	// 	Deposit = EachPayment;
-	// }	
+	}
 	
 	// calculate tax
-	//var TaxDeposit = dm(Math.round((eval(Deposit)) * TaxRate*100)/100);
 	var TaxPayment = Math.round((eval(EachPayment)) * TaxRate*100)/100;
 	
-	// calculate total first months and total rest of the months
-	//TotalDeposit = dm(Deposit + TaxDeposit);
-	Month1 = (EachPayment + TaxPayment);
-	Month1 = Month1 + LDWMonthly;
-	//Month1 = Month1;
-	TotalCharge = Month1 * 2;
-	TotalCharge = TotalCharge + DeliveryCharge + parseFloat( $("#cra").val() );
-	//MonthRest = dm( EachPayment + TaxPayment + LDWMonthly );
-	// Set the values
+	Month1 = EachPayment + TaxPayment +  LDWMonthly;
+	TotalIntialPayment = Month1 * 2;
+	CRA = ( $("#cra").val() < 1) ? 0 : $("#cra").val();
+	TotalIntialPayment = TotalIntialPayment + DeliveryCharge + parseFloat(CRA);
+	
 	//the inputs
-	$("#month1").val( (EachPayment + TaxPayment) * 2);
+	$("#month1").val( Month1 * 2);
     $("#irp").val(dm(EachPayment*2));
 	$("#ist").val(dm(TaxPayment*2)); 	
 	$("#ldw").val(dm(LDWMonthly*2));
 	$("#dc").val(DeliveryCharge);
-	$("#tip").val(dm(TotalCharge));
+	$("#tip").val(TotalIntialPayment);
+	$("#initial-pay-athorization").val(TotalIntialPayment);
 	// end inputs
 
 	// no cra row
@@ -110,13 +79,14 @@ function calculate()
 
 	// yes cra row
 	$("#payment-yes-cra").text(dm(EachPayment));
-	$("#yes-ldw-total").text(dm(EachPayment));
+	$("#yes-ldw-total").text(dm(Month1));
 	// yes cra row end
 
 	// agree to terms row
 	$("#ContractTotal").text( dm(EachPayment * LoanTerm)); 	
 	$("#AgreeToTerms").text(LoanTerm);
-	$("#PayOff").text();
+	po = (TotalPrice / (EachPayment * LoanTerm)) * 100;
+	$("#PayOff").text("%"+ Math.ceil(po));
 	// end agree to terms row
 
     
@@ -133,11 +103,11 @@ function error(selector) {
 	$("#MonthRest").val("&#160;"); 	
 }
 // checks to see if a value is numeric
-function IsNumeric(val) {
+// function IsNumeric(val) {
 
-	return !isNaN(parseFloat(val)) && isFinite(val);
+// 	return !isNaN(parseFloat(val)) && isFinite(val);
 	
-}
+// }
     
 function reCalulatePayment() {
     
@@ -187,7 +157,10 @@ function reCalulatePayment() {
 
 	if( (dp + mls) < capturedExtraDownPayment ) {
 		 $("#cra").val((cra + .01).toFixed(2));
-	} else if( (dp + mls) < capturedExtraDownPayment ) {
+		 if($("#cra").val() < 0) {
+			$("#cra").val(0);
+		}
+	} else if( (dp + mls) > capturedExtraDownPayment ) {
 		$("#cra").val((cra - .01).toFixed(2));
 	}
 	else {
@@ -281,13 +254,12 @@ jQuery(function($) {
        
 		event.preventDefault();
 
-        if($("#original_initial_payment").val() > 0 ) {
-            
-            reCalulatePayment(); 
-        }
-		else {
-			alert("Please Enter An Initial Downpayment.");
-		}
+		var oip = ( $("#original_initial_payment").val() < 1 )  ? 0 : $("#original_initial_payment").val();
+		
+		$("#original_initial_payment").val(oip);
+		
+		reCalulatePayment(); 
+        
     } );
 }(jQuery));
 

@@ -73,7 +73,7 @@ class CustomersController extends Controller
         // $customer->secondary_phone = request('secondary_phone');
         // $customer->email = request('email');
 
-            $customer->save();
+            //$customer->save();
 
         return redirect('/customers');
     }

@@ -5,7 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use DB;
 
-class material extends Component
+class businesses extends Component
 {
     /**
      * Create a new component instance.
@@ -24,8 +24,9 @@ class material extends Component
      */
     public function render()
     {
-        $material = DB::table('materials')->get();
-
-        return view('components.material',['materials' => $material]);
+       
+        $businesses = DB::table('Company')->get();
+        
+        return view('components.businesses', ['businesses' => $businesses]);
     }
 }
