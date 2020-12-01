@@ -42,7 +42,7 @@
                         
                         <div class="control">
 
-                            <input @error('sales_person') class="is-danger" @enderror type="text" id="sales_person" name="sales_person"  value="{{old('sales_person')}}"  />
+                            <input @error('sales_person') class="is-danger" @enderror type="text" id="sales_person" name="sales_person"  value="{{old('sales_person')}}" required />
 
                             @error('address')
                                 <p class="help is-danger">{{ $errors->first('sales_person') }}</p>
@@ -89,7 +89,7 @@
 
                         <div class="control">
 
-                            <input @error('email') class="is-danger" @enderror type="phone" id="email" name="email"  value="{{old('email')}}"  placeholder="user@domain.com" />
+                            <input @error('email') class="is-danger" @enderror type="phone" id="email" name="email"  value="{{old('email')}}" required placeholder="user@domain.com" />
 
                             @error('email')
                                 <p class="help is-danger">{{ $errors->first('email') }}</p>
@@ -106,7 +106,7 @@
 
                         <div class="control">
 
-                            <input @error('phone') class="is-danger" @enderror type="text" id="phone" name="phone" value="{{old('phone')}}"  placeholder="000-000-0000" />
+                            <input @error('phone') class="is-danger" @enderror type="text" id="phone" name="phone" value="{{old('phone')}}" required placeholder="000-000-0000" />
 
                             @error('phone')
                                 <p class="help is-danger">{{ $errors->first('phone') }}</p>
@@ -138,7 +138,7 @@
                     
                     <div class="control">
 
-                        <input @error('shipping_address') class="is-danger" @enderror type="text" id="shipping_address" name="shipping_address" value="{{old('shipping_address')}}"  />
+                        <input @error('shipping_address') class="is-danger" @enderror type="text" id="shipping_address" name="shipping_address" value="{{old('shipping_address')}}" required />
 
                         @error('shipping_address')
                             <p class="help is-danger">{{ $errors->first('shipping_address') }}</p>
@@ -154,7 +154,7 @@
                         
                         <div class="control">
 
-                            <input @error('shipping_city') class="is-danger" @enderror type="text" id="shipping_city" name="shipping_city" value="{{old('shipping_city')}}"  />
+                            <input @error('shipping_city') class="is-danger" @enderror type="text" id="shipping_city" name="shipping_city" value="{{old('shipping_city')}}" required />
 
                             @error('shipping_city')
                                 <p class="help is-danger">{{ $errors->first('shipping_city') }}</p>
@@ -168,7 +168,7 @@
                         <label for="shipping_state">Shipping State:</label> 
                         
                         <div class="control">
-                            <select name="shipping_state" >
+                            <select name="shipping_state" required>
                                 <option value="">Select State</option>
                                 <option value="ID">Idaho</option>
                                 <option value="MT">Montana</option>
@@ -192,7 +192,7 @@
                         
                         <div class="control">
 
-                            <input @error('shipping_county') class="is-danger" @enderror type="text" id="shipping_county" name="shipping_county" value="{{old('shipping_county')}}"  />
+                            <input @error('shipping_county') class="is-danger" @enderror type="text" id="shipping_county" name="shipping_county" value="{{old('shipping_county')}}" required />
 
                             @error('shipping_county')
                                 <p class="help is-danger">{{ $errors->first('shipping_county') }}</p>
@@ -206,7 +206,7 @@
                         <label for="shipping_country">Shipping Country:</label> 
                         
                         <div class="control">
-                            <select name="shipping_country" >
+                            <select name="shipping_country" required>
                                 <option value="USA">United States</option>
                             </select>
 
@@ -231,7 +231,7 @@
                         
                         <div class="control">
 
-                            <input @error('reference_name') class="is-danger" @enderror type="text" id="reference_name" name="reference_name" value="{{old('reference_name')}}"  />
+                            <input @error('reference_name') class="is-danger" @enderror type="text" id="reference_name" name="reference_name" value="{{old('reference_name')}}" required />
 
                             @error('reference_name')
                                 <p class="help is-danger">{{ $errors->first('reference_name') }}</p>
@@ -247,7 +247,7 @@
                         
                         <div class="control">
 
-                            <input @error('reference_phone') class="is-danger" @enderror type="phone" id="reference_phone" name="reference_phone" value="{{old('reference_phone')}}"  placeholder="000-000-0000" />
+                            <input @error('reference_phone') class="is-danger" @enderror type="phone" id="reference_phone" name="reference_phone" value="{{old('reference_phone')}}" required placeholder="000-000-0000" />
 
                             @error('reference_phone')
                                 <p class="help is-danger">{{ $errors->first('reference_phone') }}</p>
@@ -270,7 +270,7 @@
                         
                         <div class="control">
 
-                            <input @error('product_size') class="is-danger" @enderror type="text" id="product_size" name="product_size" value="{{old('product_size')}}"  placeholder="WxL (8x10)" />
+                            <input @error('product_size') class="is-danger" @enderror type="text" id="product_size" name="product_size" value="{{old('product_size')}}" required placeholder="WxL (8x10)" />
 
                             @error('product_size')
                                 <p class="help is-danger">{{ $errors->first('product_size   ') }}</p>
@@ -286,7 +286,7 @@
                         
                         <div class="control">
 
-                            <input @error('product_style') class="is-danger" @enderror type="phone" id="product_style" name="product_style" value="{{old('product_size')}}"  />
+                            <input @error('product_style') class="is-danger" @enderror type="phone" id="product_style" name="product_style" value="{{old('product_size')}}" required />
 
                             @error('product_style')
                                 <p class="help is-danger">{{ $errors->first('product_style') }}</p>
@@ -304,7 +304,7 @@
                         
                         <div class="control">
 
-                            <input @error('product_side_color') class="is-danger" @enderror type="text" id="product_side_color" name="product_side_color" value="{{old('product_side_color')}}"  />
+                            <input @error('product_side_color') class="is-danger" @enderror type="text" id="product_side_color" name="product_side_color" value="{{old('product_side_color')}}" required />
 
                             @error('product_side_color')
                                 <p class="help is-danger">{{ $errors->first('product_side_color') }}</p>
@@ -320,7 +320,7 @@
                         
                         <div class="product_trim_color">
 
-                            <input @error('product_trim_color') class="is-danger" @enderror type="phone" id="product_trim_color" name="product_trim_color" value="{{old('product_trim_color')}}"  />
+                            <input @error('product_trim_color') class="is-danger" @enderror type="phone" id="product_trim_color" name="product_trim_color" value="{{old('product_trim_color')}}" required />
 
                             @error('product_trim_color')
                                 <p class="help is-danger">{{ $errors->first('product_trim_color') }}</p>
@@ -338,7 +338,7 @@
                         
                         <div class="control">
 
-                            <input @error('product_roof_color') class="is-danger" @enderror type="text" id="product_roof_color" name="product_roof_color" value="{{old('product_roof_color')}}"  />
+                            <input @error('product_roof_color') class="is-danger" @enderror type="text" id="product_roof_color" name="product_roof_color" value="{{old('product_roof_color')}}" required />
 
                             @error('product_roof_color')
                                 <p class="help is-danger">{{ $errors->first('product_roof_color') }}</p>
@@ -354,7 +354,7 @@
                         
                         <div class="product_roof_material">
 
-                            <input @error('product_trim_color') class="is-danger" @enderror type="phone" id="product_roof_material" name="product_roof_material" value="{{old('product_roof_material')}}"  />
+                            <input @error('product_trim_color') class="is-danger" @enderror type="phone" id="product_roof_material" name="product_roof_material" value="{{old('product_roof_material')}}" required />
 
                             @error('product_roof_material')
                                 <p class="help is-danger">{{ $errors->first('product_roof_material') }}</p>
@@ -378,7 +378,7 @@
                         
                         <div class="product_serial_number">
 
-                            <input @error('product_serial_number') class="is-danger" @enderror type="text" id="product_serial_number" name="product_serial_number" value="{{old('product_serial_number')}}"  />
+                            <input @error('product_serial_number') class="is-danger" @enderror type="text" id="product_serial_number" name="product_serial_number" value="{{old('product_serial_number')}}" required />
 
                             @error('product_serial_number')
                                 <p class="help is-danger">{{ $errors->first('product_serial_number') }}</p>
@@ -427,7 +427,7 @@
 
                             <div class="input-group">
                                 <span class="label-sufix">$</span>
-                                    <input @error('product_cash_price') class="is-danger" @enderror type="text" id="product_cash_price" name="product_cash_price" value="{{old('product_cash_price', '0.00')}}"  />
+                                    <input @error('product_cash_price') class="is-danger" @enderror type="text" id="product_cash_price" name="product_cash_price" value="{{old('product_cash_price')}}" required />
                             </div>
                             @error('product_cash_price')
                                 <p class="help is-danger">{{ $errors->first('product_cash_price') }}</p>
@@ -444,7 +444,7 @@
                         <div class="product_sales_tax">
                             <div class="input-group">
                                 <span class="label-sufix">%</span>
-                                    <input @error('product_sales_tax') class="is-danger" @enderror type="text" id="product_sales_tax" name="product_sales_tax" value="{{old('product_trim_color')}}"  />
+                                    <input @error('product_sales_tax') class="is-danger" @enderror type="text" id="product_sales_tax" name="product_sales_tax" value="{{old('product_trim_color')}}" required />
                             </div>
                             @error('product_sales_tax')
                                 <p class="help is-danger">{{ $errors->first('product_sales_tax') }}</p>
@@ -463,7 +463,7 @@
                         <div class="control">
                             <div class="input-group">
                                 <span class="label-sufix">$</span>
-                                <input @error('product_delivery_charge') class="is-danger" @enderror type="text" id="product_delivery_charge" name="product_delivery_charge" value="{{old('product_delivery_charge')}}" />
+                                <input @error('product_delivery_charge') class="is-danger" @enderror type="text" id="product_delivery_charge" name="product_delivery_charge" value="{{old('product_delivery_charge')}}" required />
                             </div>
                             @error('product_delivery_charge')
                                 <p class="help is-danger">{{ $errors->first('product_delivery_charge') }}</p>
@@ -479,7 +479,7 @@
                         
                         <div class="delivery_date">
 
-                            <input @error('delivery_date') class="is-danger" @enderror type="date" id="delivery_date" name="delivery_date" value="{{old('delivery_date')}}" />
+                            <input @error('delivery_date') class="is-danger" @enderror type="date" id="delivery_date" name="delivery_date" value="{{old('delivery_date')}}" required />
 
                             @error('delivery_date')
                                 <p class="help is-danger">{{ $errors->first('delivery_date') }}</p>
@@ -525,7 +525,7 @@
 
                             <div class="input-group">
                                 <span class="label-sufix">$</span>
-                                    <input @error('ldw-monthly') class="is-danger" @enderror type="text" id="ldw-monthly" name="ldw-monthly" value="{{old('ldw-monthly')}}" disabled />
+                                    <input @error('ldw-monthly') class="is-danger" @enderror type="text" id="ldw-monthly" name="ldw-monthly" value="{{old('ldw-monthly')}}" required />
                             </div>
                             @error('ldw-monthly')
                                 <p class="help is-danger">{{ $errors->first('ldw-monthly') }}</p>
@@ -561,25 +561,41 @@
             <h3>Rental Payment</h3>
             <div class="inner-section">
                 <div class="form-row">
+<<<<<<< HEAD
                     <p>The monthly rental payment is  $<span id="payment-no-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra">0.00</span> for a total of  $<span id="no-ldw-total">0.00</span></p>
                 </div>
             {{-- <div class="form-row">
                     <p>The monthly rental payment with CRA is  $<span id="payment-yes-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of  $<span class="ldw-cra">0.00</span> for a total of  $<span id="yes-ldw-total">0.00</span></p>
             </div> --}}
+=======
+                    <p>The monthly rental payment without CRA is  $<span id="payment-no-cra"></span> plus a monthly sales tax of  $<span class="tax-cra"></span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra"></span> for a total of  $<span id="no-ldw-total"></span></p>
+                </div>
+            <div class="form-row">
+                    <p>The monthly rental payment with CRA is  $<span id="payment-yes-cra"></span> plus a monthly sales tax of  $<span class="tax-cra"></span> plus optional Liability Damage Waiver fee of  $<span class="ldw-cra"></span> for a total of  <span id="yes-ldw-total"></span></p>
+            </div>
+>>>>>>> parent of 3c96b57... Calc working
             </div>
         </section>
         <section class="form-section"  id="reference">
             <h3>Intial Payments</h3>
             <div class="inner-section">
                 <div class="form-row">
-                <input type="hidden" name="month1" id="month1" />
                 <ol>
+<<<<<<< HEAD
                     <li><label>Initial Rental Payment (2 Months): <input type="text" name="irp" id="irp" disabled /></label></li>
                     <li><label>Initial Sales Tax <input type="text" name="ist" id="ist" disabled /></label></li>
                     <li><label>Liability Damage Waiver <input type="text" name="ldw" id="ldw" disabled /></label></li>
                     <li><label>Customer Reserve Account <input type="number" name="cra" id="cra" disabled /></label></li>
                     <li><label>Delivery Charge <input type="text" name="dc" id="dc" disabled /></label></li>
                     <li><label>Total Initial Payment <input type="text" name="tip" id="tip" disabled /></label></li>
+=======
+                    <li><label>Initial Rental Payment (2 Months): <input type="text" name="irp" id="irp" /></label></li>
+                    <li><label>Initial Sales Tax <input type="text" name="ist" id="ist" /></label></li>
+                    <li><label>Liability Damage Waiver <input type="text" name="ldw" id="ldw" /></label></li>
+                    <li><label>Customer Reserve Account <input type="text" name="cra" id="cra" /></label></li>
+                    <li><label>Delivery Charge <input type="text" name="dc" id="dc" /></label></li>
+                    <li><label>Total Initial Payment <input type="text" name="tip" id="tip" /></label></li>
+>>>>>>> parent of 3c96b57... Calc working
                 </ol>
                 </div>
             </div>
@@ -588,7 +604,7 @@
             <h3>Rental Purchasse Ownership</h3>
             <div class="inner-section">
                  <div class="form-row">
-                    <p>At <span id="AgreeToTerms"></span> monthly rental payments, we will apply any balance in the CRA, plus tax, and you will own the property. You will have paid a Total Cost of $<span id="ContractTotal">0.00</span> not including LDW or tax. At any time you can do an early payoff by paying <span id="PayOff"></span> of the remaining payments plus tax for ownership.
+                    <p>At <span id="AgreeToTerms"></span> monthly rental payments, we will apply any balance in the CRA, plus tax, and you will own the property. You will have paid a Total Cost of <span id="ContractTotal"></span> not including LDW or tax. At any time you can do an early payoff by paying <span id="PayOff"></span> of the remaining payments plus tax for ownership.
                     </p>
                  </div>
             </div>
@@ -605,7 +621,11 @@
 
                                 <div class="input-group">
                                     <span class="label-sufix">$</span>
+<<<<<<< HEAD
                                         <input @error('initial-pay-athorization') class="is-danger" @enderror type="text" id="initial-pay-athorization" name="initial-pay-athorization" disabled value="{{old('initial-pay-athorization')}}" />
+=======
+                                        <input @error('initial-pay-athorization') class="is-danger" @enderror type="text" id="initial-pay-athorization" name="initial-pay-athorization" value="{{old('initial-pay-athorization')}}" required />
+>>>>>>> parent of 3c96b57... Calc working
                                 </div>
                                 @error('initial-pay-athorization')
                                     <p class="help is-danger">{{ $errors->first('initial-pay-athorization') }}</p>
