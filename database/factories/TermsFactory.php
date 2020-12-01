@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\materials;
+use App\Models\terms;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class materialsFactory extends Factory
+class termsFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = materials::class;
+    protected $model = terms::class;
 
     /**
      * Define the model's default state.
@@ -21,6 +21,8 @@ class materialsFactory extends Factory
      */
     public function definition()
     {
-        //
+        return [
+            //
+        ];
     }
 }

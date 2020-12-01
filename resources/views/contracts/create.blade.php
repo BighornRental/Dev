@@ -561,19 +561,7 @@
             <h3>Rental Payment</h3>
             <div class="inner-section">
                 <div class="form-row">
-<<<<<<< HEAD
                     <p>The monthly rental payment is  $<span id="payment-no-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra">0.00</span> for a total of  $<span id="no-ldw-total">0.00</span></p>
-                </div>
-            {{-- <div class="form-row">
-                    <p>The monthly rental payment with CRA is  $<span id="payment-yes-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of  $<span class="ldw-cra">0.00</span> for a total of  $<span id="yes-ldw-total">0.00</span></p>
-            </div> --}}
-=======
-                    <p>The monthly rental payment without CRA is  $<span id="payment-no-cra"></span> plus a monthly sales tax of  $<span class="tax-cra"></span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra"></span> for a total of  $<span id="no-ldw-total"></span></p>
-                </div>
-            <div class="form-row">
-                    <p>The monthly rental payment with CRA is  $<span id="payment-yes-cra"></span> plus a monthly sales tax of  $<span class="tax-cra"></span> plus optional Liability Damage Waiver fee of  $<span class="ldw-cra"></span> for a total of  <span id="yes-ldw-total"></span></p>
-            </div>
->>>>>>> parent of 3c96b57... Calc working
             </div>
         </section>
         <section class="form-section"  id="reference">
@@ -581,21 +569,12 @@
             <div class="inner-section">
                 <div class="form-row">
                 <ol>
-<<<<<<< HEAD
                     <li><label>Initial Rental Payment (2 Months): <input type="text" name="irp" id="irp" disabled /></label></li>
                     <li><label>Initial Sales Tax <input type="text" name="ist" id="ist" disabled /></label></li>
                     <li><label>Liability Damage Waiver <input type="text" name="ldw" id="ldw" disabled /></label></li>
                     <li><label>Customer Reserve Account <input type="number" name="cra" id="cra" disabled /></label></li>
                     <li><label>Delivery Charge <input type="text" name="dc" id="dc" disabled /></label></li>
                     <li><label>Total Initial Payment <input type="text" name="tip" id="tip" disabled /></label></li>
-=======
-                    <li><label>Initial Rental Payment (2 Months): <input type="text" name="irp" id="irp" /></label></li>
-                    <li><label>Initial Sales Tax <input type="text" name="ist" id="ist" /></label></li>
-                    <li><label>Liability Damage Waiver <input type="text" name="ldw" id="ldw" /></label></li>
-                    <li><label>Customer Reserve Account <input type="text" name="cra" id="cra" /></label></li>
-                    <li><label>Delivery Charge <input type="text" name="dc" id="dc" /></label></li>
-                    <li><label>Total Initial Payment <input type="text" name="tip" id="tip" /></label></li>
->>>>>>> parent of 3c96b57... Calc working
                 </ol>
                 </div>
             </div>
@@ -621,11 +600,7 @@
 
                                 <div class="input-group">
                                     <span class="label-sufix">$</span>
-<<<<<<< HEAD
-                                        <input @error('initial-pay-athorization') class="is-danger" @enderror type="text" id="initial-pay-athorization" name="initial-pay-athorization" disabled value="{{old('initial-pay-athorization')}}" />
-=======
-                                        <input @error('initial-pay-athorization') class="is-danger" @enderror type="text" id="initial-pay-athorization" name="initial-pay-athorization" value="{{old('initial-pay-athorization')}}" required />
->>>>>>> parent of 3c96b57... Calc working
+                                    <input @error('initial-pay-athorization') class="is-danger" @enderror type="text" id="initial-pay-athorization" name="initial-pay-athorization" disabled value="{{old('initial-pay-athorization')}}" />
                                 </div>
                                 @error('initial-pay-athorization')
                                     <p class="help is-danger">{{ $errors->first('initial-pay-athorization') }}</p>

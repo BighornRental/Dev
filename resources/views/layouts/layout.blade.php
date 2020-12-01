@@ -11,18 +11,18 @@ use App\Models\Contracts;
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;0,900;1,300&display=swap" rel="stylesheet">
-        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=3.6" type="text/css" media="all" />
+        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=3.5" type="text/css" media="all" />
        
     </head>
     <body class="antialiased">
             <nav id="navbar">
             
             <ul>
-                <li><a href="/"><img id="logo-branding" src="/img/Bighorn-Rental-Logo.png" rel="logo" height="80px" width="auto" alt="Bighorn Rental Logo" /></a></li>
+                <li><a href="/"><img id="logo-branding" src="/img/Bighorn-Rental-Logo.png" rel="logo" height="80px" width="auto" v-align="top" alt="Bighorn Rental Logo" /></a> {{\Auth::user()->name ?? ''}}</li>
                 <li><a class="{{Request::is('/') ? 'current_page_link' : ''}}"" href="/">Home</a></li>
                 @if(Auth::check()) 
-                    <li><a class="{{Request::is('customers') ? 'current_page_link' : ''}}"" href="/customers">Customers</a></li>
                     <li><a class="{{Request::is('customers/create') ? 'current_page_link' : ''}}"" href="/customers/create">Create New Customer</a></li>
+                    <li><a class="{{Request::is('customers') ? 'current_page_link' : ''}}"" href="/customers">Customers</a></li>
                     <li><a href="/home/logout" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">Log Out</a></li>
                     <form id="logout-form" action="/logout" method="POST" class="d-none">
@@ -38,6 +38,6 @@ use App\Models\Contracts;
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     @if(url()->current() == 'https://com.bighornrental:8890/contracts/create')
-        <script src="/js/bhr.js?version=3.4"></script>
+        <script src="/js/calculator.js?version=3.4"></script>
     @endif
 </html>

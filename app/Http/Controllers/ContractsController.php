@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Contracts;
 use App\Models\Customers;
-use App\Models\Company;
-use Auth;
 use Route;
 
 class ContractsController extends Controller
@@ -38,7 +36,6 @@ class ContractsController extends Controller
     }
 
     public function create() {
-        
 
         return view('contracts.create');
     }

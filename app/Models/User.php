@@ -6,14 +6,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Scopes\CompanyScope;
-use App\Permissions\HasPermissionsTrait;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
-    use HasPermissionsTrait; //Import The Trait
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'company_id',
+        'roles',
         'password',
     ];
 
@@ -50,10 +47,4 @@ class User extends Authenticatable
 
         return $this->hasMany(Customers::class);
     }
-
-    protected static function booted()
-    {
-        static::addGlobalScope(new CompanyScope);
-    }
-
 }

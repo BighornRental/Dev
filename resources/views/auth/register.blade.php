@@ -26,10 +26,33 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="company" class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
+                            <label for="roles" class="col-md-4 col-form-label text-md-right">{{ __('Roles') }}</label>
 
                             <div class="col-md-6">
-                                <x-businesses />
+                               <select id="roles" name="roles" class="form-control">
+                                    <option value="">Select Role</option>
+                                    <option value="0">Administrator</option>
+                                    <option value="1">User</option>
+                                </select>
+                                @error('companies')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="companies" class="col-md-4 col-form-label text-md-right">{{ __('Companies') }}</label>
+
+                            <div class="col-md-6">
+                               <x-companies />
+
+                                @error('companies')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 

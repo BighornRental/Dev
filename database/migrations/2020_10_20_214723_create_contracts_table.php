@@ -51,7 +51,7 @@ class CreateContractsTable extends Migration
             $table->boolean('signed')->default(false);
             $table->boolean('intial_payment')->default(false);
             $table->timestamps();
-            $table->foreign('customers_id')->references('id')->on('customers')->onDelete('Cascade');
+            $table->foreign('customers_id')->references('id')->on('customers')->onDelete('SET NULL');
         });
     }
 

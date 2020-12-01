@@ -25,11 +25,6 @@ a {
     text-decoration: none;
     width: 24px;
 }
-#logo-branding {
-    position: absolute;
-    left: 0;
-    top:-30px;
-}
 #navbar {
     background-color: #444;
     color: #fff;
@@ -45,11 +40,18 @@ a {
 #navbar li {
     display: inline;
 }
+#navbar li:first-child {
+    font-size: 12px;
+    left: 0;
+    position: absolute;
+    top:-30px;
+}
 #navbar a {
     display: inline-block;
     font-size: 18px;
     line-height: 18px;;
     margin-right: 12px;
+    vertical-align: middle;
 }
 #navbar a.current_page_link {
     background-color: #666;
@@ -120,7 +122,6 @@ label {
     width: calc(100% - 4em);
 }
 input {
-    background-color: #fff;
     border: 1px solid #bbb;
     box-shadow: inset 1px 1px 3px #00000022;
     font-size: 12pt;
@@ -128,6 +129,7 @@ input {
     width: 100%;
 }
 input:disabled {
+    background-color: #fff;
     border: none;
     box-shadow: none;
 }
