@@ -32,6 +32,7 @@ Route::get('/contracts/', [ContractsController::class, 'index']);
 Route::get('/contracts/create', [ContractsController::class, 'create']);
 Route::post('contracts/calculate', [CalcluatorController::class, 'calculate']);
 Route::get('/contracts/{contract}/delete', [ContractsController::class, 'destory']);
+
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

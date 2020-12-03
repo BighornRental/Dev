@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customers;
 use App\Models\Contracts;
-use App\Modles\User;
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +21,7 @@ class CustomersController extends Controller
 
         //show a list of customers
         
-        $customers = Customers::simplePaginate(4)->user;
+        $customers = Customers::simplePaginate(4);
 
         return view('customers.index', ['customers'=> $customers]);
 
