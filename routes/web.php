@@ -24,9 +24,9 @@ Route::get('/', function () {
 Route::get('/customers', [CustomersController::class, 'index']);
 Route::post('/customers', [CustomersController::class, 'store']);
 Route::get('/customers/create', [CustomersController::class, 'create']);
+Route::put('/customers/{customer_id}', [CustomersController::class, 'update']);
 Route::get('/customers/{customer}', [CustomersController::class, 'show']);
 Route::get('/customers/{customer}/edit', [CustomersController::class, 'edit']);
-Route::put('/customers/{customer_id}', [CustomersController::class, 'update']);
 Route::get('/customers/{customer}/contracts', [CustomersController::class, 'contracts']);
 Route::get('/contracts/', [ContractsController::class, 'index']);
 Route::get('/contracts/create', [ContractsController::class, 'create']);

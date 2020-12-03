@@ -40,7 +40,7 @@ function calculate()
 	TaxRate = (TaxRate >= 1) ? TaxRate / 100 : 0;
 	
 	// calculate FullPrice (Labeled as "Contract Initial Total")
-	var FullPrice = ( parseFloat(TotalPrice) + parseFloat(DeliveryCharge)) - DownPayment;
+	var FullPrice = ( !isNaN(TotalPrice) ) ? parseFloat( TotalPrice - CustmerReserveAccount ) : 0;
 	
 	// calculate EachPayment
 	var EachPayment = 0;
@@ -60,7 +60,8 @@ function calculate()
 	// calculate tax
 	var TaxPayment = Math.round((eval(EachPayment)) * TaxRate*100)/100;
 	
-	Month1 = EachPayment + TaxPayment +  LDWMonthly;
+	Month1 = (EachPayment + TaxPayment);
+	Month1 = Month1 + LDWMonthly;
 	TotalIntialPayment = Month1 * 2;
 	CRA = ( $("#cra").val() < 1) ? 0 : $("#cra").val();
 	TotalIntialPayment = TotalIntialPayment + DeliveryCharge + parseFloat(CRA);
@@ -68,8 +69,9 @@ function calculate()
 	//the inputs
 	$("#month1").val( Month1 * 2);
     $("#irp").val(dm(EachPayment*2));
-	$("#ist").val(dm(TaxPayment*2)); 	
+	$("#ist").val(TaxPayment * 2); 	
 	$("#ldw").val(dm(LDWMonthly*2));
+	$("#cra").val(CRA);
 	$("#dc").val(DeliveryCharge);
 	$("#tip").val(TotalIntialPayment);
 	$("#initial-pay-athorization").val(TotalIntialPayment);
@@ -141,23 +143,24 @@ function reCalulatePayment() {
         dp = dp - i;
         
         //set down payment to a new lower value
-        $("#DownPayment").val(dp.toFixed(2));
+		//$("#DownPayment").val(dp.toFixed(2));
+		$("#cra").val(dp.toFixed(2))
         
         calculate();
         
         //after calculations get values;
         
-        dps = parseFloat( $("#DownPayment").val() );
+        dps = parseFloat( $("#cra").val() );
         
-        mls = parseFloat( $("#Month1").val() );
-        
+		mls = parseFloat($("#month1").val());
+		        
         // when we reach with a $1 we go to cents
-        i = ((mls - 1) < capturedExtraDownPayment) ? .01 : 1;
+        i = ((dps + mls) - 1  < capturedExtraDownPayment) ? .01 : 1;
         
     }
-	
-	while( (dp + mls) > capturedExtraDownPayment);
-    //while( mls < capturedExtraDownPayment );
+
+	while( (dp + mls) > capturedExtraDownPayment );
+   // while( dp > 998 );
 	
 	cra = parseFloat( $("#cra").val() );
 
@@ -215,11 +218,11 @@ jQuery(function($) {
 
         // correct tax rate field if user enters as a percent instead of a decimal.
         // don't do this on the keyup event.
-        var TaxRate = $("#product_sales_tax").val();
-        if (TaxRate >= 1) {
-            TaxRate = TaxRate / 100;
-            $("#product_sales_tax").val(TaxRate);
-        }
+        // var TaxRate = $("#product_sales_tax").val();
+        // if (TaxRate >= 1) {
+        //     TaxRate = TaxRate / 100;
+        //     $("#product_sales_tax").val(TaxRate);
+        // }
         calculate();
     });
 	$("#product_sales_tax").on('keyup',function() {
@@ -241,7 +244,7 @@ jQuery(function($) {
 
 	});
 
-   $("input[name='ldw']").on('change', function() {
+   $("input[name='liability_damage_waver']").on('change', function() {
 		
 		calculate();
 

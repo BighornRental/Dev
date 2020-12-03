@@ -4,7 +4,8 @@
 
     <select name="rto-terms" id="rto-terms">
         @foreach($terms AS $term)
-            <option value="{{$term->term_limits}}">{{$term->term_limits}}</option>
+            {{ $default = ($term->term_limits == 36) ? 'selected' : '' }}
+            <option value="{{$term->term_limits}}" {{$default}}>{{$term->term_limits}}</option>
         @endforeach
     </select>
 

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customers;
 use App\Models\Contracts;
+use App\Modles\User;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class CustomersController extends Controller
 {
@@ -18,7 +21,7 @@ class CustomersController extends Controller
 
         //show a list of customers
         
-        $customers = Customers::all();
+        $customers = Customers::simplePaginate(4)->user;
 
         return view('customers.index', ['customers'=> $customers]);
 
@@ -40,38 +43,25 @@ class CustomersController extends Controller
 
     public function store() {
 
-        $validatedAttr = request()->validate([
+        // $validatedAttr = request()->validate([
 
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'postal_code' => 'required',
-            'county' => 'required',
-            'country' => 'required',
-            'county' => 'required',
-            'phone' => 'required',
-            'email' => 'required|unique:customers'
-        ]);
-        //$validatedAttr['secondary_phone'] = request('secondary_phone');
+        //     'first_name' => 'required | string',
+        //     'last_name' => 'required | string',
+        //     'address' => 'required | string',
+        //     'city' => 'required | string',
+        //     'state' => 'required | max:2',
+        //     'postal_code' => 'required | digits:5',
+        //     'county' => 'required | string',
+        //     'country' => 'required | string',
+        //     'county' => 'required | string',
+        //     'phone' => 'required | regex:/^([0-9\s\-\+\(\)]*)$/ | min:10',
+        //     'email' => 'required| unique:customers',
+        //     'secondary_phone' => 'nullable | regex:/^([0-9\s\-\+\(\)]*)$/ | min:10'
+        // ]);
        
         //persist a customer
-        Customers::create( $validatedAttr );
-        // $customer = new Customers();
-
-        // $customer->first_name = request('first_name');
-        // $customer->last_name = request('last_name');
-        // $customer->address = request('address');
-        // $customer->city = request('city');
-        // $customer->state = request('state');
-        // $customer->postal_code = request('postal_code');
-        // $customer->county = request('county');
-        // $customer->country = request('country');
-        // $customer->county = request('county');
-        // $customer->phone = request('phone');
-        // $customer->secondary_phone = request('secondary_phone');
-        // $customer->email = request('email');
+        Customers::create( $this->validateCustomer() );
+    
 
 
         return redirect('/customers');
@@ -85,39 +75,10 @@ class CustomersController extends Controller
 
     }
 
-    public function update(customers $customer) {
+    public function update($id) {
 
-        request()->validate([
-
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'postal_code' => 'required',
-            'county' => 'required',
-            'country' => 'required',
-            'county' => 'required',
-            'phone' => 'required',
-            'email' => 'required'
-        ]);
-
-        //update the edited customer
-
-        $customer->first_name = request('first_name');
-        $customer->last_name = request('last_name');
-        $customer->address = request('address');
-        $customer->city = request('city');
-        $customer->state = request('state');
-        $customer->postal_code = request('postal_code');
-        $customer->county = request('county');
-        $customer->country = request('country');
-        $customer->county = request('county');
-        $customer->phone = request('phone');
-        $customer->secondary_phone = request('secondary_phone');
-        $customer->email = request('email');
-
-        $customer->save();
+        $customer = Customers::find($id);
+        $customer->update( $this->validateCustomer() );
 
         return redirect('/customers');
 
@@ -129,12 +90,38 @@ class CustomersController extends Controller
 
     }
 
-    public function contracts($customer) {
+    public function contracts() {
 
         $customer = Customers::find($customer);
     
         $contracts = $customer->contracts; // hasMany contracts
         
         return view('contracts.index', ['contracts' => $contracts, 'customer' => $customer]);
+    }
+
+    protected function validateCustomer() {
+
+        
+        // Validator::make(request()->validate([
+        //     'email' => [
+        //         'required',
+        //         Rule::unique('customers')->ignore($customer->id),
+        //     ],
+        // ]));
+        return request()->validate([
+            'user_id' => 'required',
+            'first_name' => 'required | string',
+            'last_name' => 'required | string',
+            'address' => 'required | string',
+            'city' => 'required | string',
+            'state' => 'required | max:2',
+            'postal_code' => 'required | digits:5',
+            'county' => 'required | string',
+            'country' => 'required | string',
+            'county' => 'required | string',
+            'phone' => 'required | regex:/^([0-9\s\-\+\(\)]*)$/ | min:10',
+            'email' => 'required',
+            'secondary_phone' => 'nullable | regex:/^([0-9\s\-\+\(\)]*)$/ | min:10',
+        ]);
     }
 }

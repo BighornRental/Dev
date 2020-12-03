@@ -3,6 +3,7 @@
 @section('content')
 <div id="container">
     <h1>Bighorn Rental Customers</h1>
+    <p>{{$customers->links()}}</p>
     <div id="customer-list">
         <div class="customer-row row-head">
             <div style="flex-basis:20%">Customer Name</div>
@@ -21,5 +22,6 @@
         </div>
         @endforeach
     </div>
+    <p>{{$customers->links()}}</p>
 </div>
 @endsection

@@ -5,6 +5,7 @@
     <h1>Create Contract</h1>
     <form method="POST" name="contract-form" id="contract-form" action="/contracts">
         @csrf
+        <input type="hidden" name="user_id" value="{{\Auth::user()->id}}" />
         <section class="form-section" id="contract_info">
             <h3>Contract Information</h3>
             <div class="inner-section">
@@ -568,6 +569,7 @@
             <h3>Intial Payments</h3>
             <div class="inner-section">
                 <div class="form-row">
+                <input type="hidden" name="month1" id="month1" />
                 <ol>
                     <li><label>Initial Rental Payment (2 Months): <input type="text" name="irp" id="irp" disabled /></label></li>
                     <li><label>Initial Sales Tax <input type="text" name="ist" id="ist" disabled /></label></li>

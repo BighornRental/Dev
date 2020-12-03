@@ -7,7 +7,7 @@
 <form method="POST" action="/customers">
 
 @csrf
-
+ <input type="hidden" name="user_id" value="{{\Auth::user()->id}}" />
 <div class="field">
 
     <label for="first_name">First Name:</label>
