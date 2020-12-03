@@ -20,10 +20,14 @@ class CustomersController extends Controller
     public function index() {
 
         //show a list of customers
+<<<<<<< Updated upstream
         
         $customers = Customers::simplePaginate(4);
+=======
+        $customers = User::find(\Auth::user()->id)->customers();
+>>>>>>> Stashed changes
 
-        return view('customers.index', ['customers'=> $customers]);
+        return view('customers.index', ['customers'=> $customers->simplePaginate(4)]);
 
     }
     public function show( customers $customer ) {
