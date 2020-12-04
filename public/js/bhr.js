@@ -86,37 +86,5 @@ jQuery(function($) {
        
             Accept.dispatchData(secureData, responseHandler);
     });
-
-    function responseHandler(response) {
-        if (response.messages.resultCode === "Error") {
-            var i = 0;
-            while (i < response.messages.message.length) {
-                console.log(
-                    response.messages.message[i].code + ": " +
-                    response.messages.message[i].text
-                );
-                i = i + 1;
-            }
-        }
-        else {
-            paymentFormUpdate(response.opaqueData);
-        }
-    }
-
-    function paymentFormUpdate(opaqueData) {
-        $("#dataDescriptor").val(opaqueData.dataDescriptor);
-        $("#dataValue").val(opaqueData.dataValue);
-
-        $("#cardNumber").val('');
-        $("#expMonth").val('');
-        $("#expYear").val('');
-        $("#cardCode").val('');
-        $("#accountNumber").val('');
-        $("#routingNumber").val('');
-        $("#nameOnAccount").val('');
-        $("#accountType").val('');
-
-        $("#paymentForm").submit();
-    }
-
+    
 }(jQuery))

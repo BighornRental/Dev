@@ -1,5 +1,4 @@
 @extends('layouts.layout')
-
 @section('content')
 <div id="container">
     <h1>Create Contract</h1>
@@ -647,22 +646,24 @@
                         </select>
                     </div>
                 </div>
-                <form id="paymentForm"
-    method="POST"
-    action="https://YourServer/PathToExistingPaymentProcessingScript">
-    <input type="hidden" name="dataValue" id="dataValue" />
-    <input type="hidden" name="dataDescriptor" id="dataDescriptor" />
-    <button type="button"
-        class="AcceptUI"
-        data-billingAddressOptions='{"show":true, "required":false}' 
-        data-apiLoginID="9B6aH2dq" 
-        data-clientKey="3rYC8fQmrtqNws9UUXgK8jKQ468hS8uA6y3E964E95WwbtBEM5F3TZ7jtLKT8yHy"
-        data-acceptUIFormBtnTxt="Submit" 
-        data-acceptUIFormHeaderTxt="Card Information"
-        data-paymentOptions='{"showCreditCard": true, "showBankAccount": true}' 
-        data-responseHandler="responseHandler">Pay
-    </button>
-</form>
+                
+    <form id="paymentForm"
+        method="POST"
+        action="https://YourServer/PathToExistingPaymentProcessingScript">
+        <input type="hidden" name="dataValue" id="dataValue" />
+        <input type="hidden" name="dataDescriptor" id="dataDescriptor" />
+        <button type="button"
+            class="AcceptUI"
+            data-billingAddressOptions='{"show":true, "required":false}' 
+            data-apiLoginID="9B6aH2dq" 
+            data-clientKey="3rYC8fQmrtqNws9UUXgK8jKQ468hS8uA6y3E964E95WwbtBEM5F3TZ7jtLKT8yHy"
+            data-acceptUIFormBtnTxt="Submit" 
+            data-acceptUIFormHeaderTxt="Card Information"
+            data-paymentOptions='{"showCreditCard": true, "showBankAccount": true}' 
+            data-responseHandler="responseHandler">Pay
+        </button>
+    </form>
+
             </div>
         </section>
         <section class="form-section"  id="reference">
@@ -686,7 +687,7 @@
             </div>
         </section>
         
-    </form>
+</form>
 </div>
 <div id="modal">
     <div id="modal-content">

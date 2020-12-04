@@ -37,10 +37,51 @@ use App\Models\Contracts;
 
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    @if(url()->current() == 'https://com.bighornrental:8890/contracts/create')
-        <script src="/js/calculator.js?version=3.8"></script>
-        <script src="/js/bhr.js?version=0.2"></script>
-        {{-- <script type="text/javascript" src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"></script> --}}
-        <script type="text/javascript" src="https://jstest.authorize.net/v3/AcceptUI.js" charset="utf-8"></script>
+    <script src="/js/calculator.js?version=3.8"></script>
+    <script src="/js/bhr.js?version=0.2"></script>
+    @if(url()->current() == env('APP_URL'). 'contracts/create')
+        <script type="text/javascript"
+            src="https://jstest.authorize.net/v3/AcceptUI.js"
+            charset="utf-8"></script>
+        <script type="text/javascript"
+            src="https://jstest.authorize.net/v3/AcceptUI.js"
+            charset="utf-8">
+        </script>
+
+
+
+        <script type="text/javascript">
+        function responseHandler(response) {
+            console.log(response);
+            if (response.messages.resultCode === "Error") {
+                var i = 0;
+                while (i < response.messages.message.length) {
+                    console.log(
+                        response.messages.message[i].code + ": " +
+                        response.messages.message[i].text
+                    );
+                    i = i + 1;
+                }
+            } else {
+                paymentFormUpdate(response.opaqueData);
+            }
+        }
+
+
+        function paymentFormUpdate(opaqueData) {
+            document.getElementById("dataDescriptor").value = opaqueData.dataDescriptor;
+            document.getElementById("dataValue").value = opaqueData.dataValue;
+
+            // If using your own form to collect the sensitive data from the customer,
+            // blank out the fields before submitting them to your server.
+            // document.getElementById("cardNumber").value = "";
+            // document.getElementById("expMonth").value = "";
+            // document.getElementById("expYear").value = "";
+            // document.getElementById("cardCode").value = "";
+
+            document.getElementById("paymentForm").submit();
+        }
+        </script>
     @endif
+
 </html>
