@@ -251,6 +251,45 @@ button {
 .error {
     background-color: red;
 }
+#modal {
+    background-color: #00000088;
+    display: none;
+    height: 100%;
+    left: 0;
+    padding: 25vh 35vw;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    z-index: 900;
+}
+#modal #modal-content {
+    background-color: #fff;
+    border-radius: 9px;
+    box-shadow: 6px 6px 12px #00000066;
+}
+#modal #modal-close {
+    border-bottom: 1px solid #aaa;
+    cursor: pointer;
+    padding: 12px 18px;
+    text-align: right;
+}
+#modal form {
+    padding: 24px;
+}
+#modal h3 {
+    margin-top: 0;
+}
+#modal form #inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#modal form input {
+    display: block;
+    flex-basis: 45%;
+    margin-bottom: .7em;
+}
 @media ( max-width: 800px) {
 
     .form-section .form-row {

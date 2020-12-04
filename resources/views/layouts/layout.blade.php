@@ -11,7 +11,7 @@ use App\Models\Contracts;
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;0,900;1,300&display=swap" rel="stylesheet">
-        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=3.6" type="text/css" media="all" />
+        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=3.9" type="text/css" media="all" />
        
     </head>
     <body class="antialiased">
@@ -38,7 +38,9 @@ use App\Models\Contracts;
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     @if(url()->current() == 'https://com.bighornrental:8890/contracts/create')
-        <script src="/js/calculator.js?version=3.7"></script>
-        <script type="text/javascript" src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"> </script>
+        <script src="/js/calculator.js?version=3.8"></script>
+        <script src="/js/bhr.js?version=0.2"></script>
+        {{-- <script type="text/javascript" src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"></script> --}}
+        <script type="text/javascript" src="https://jstest.authorize.net/v3/AcceptUI.js" charset="utf-8"></script>
     @endif
 </html>

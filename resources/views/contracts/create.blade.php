@@ -647,6 +647,22 @@
                         </select>
                     </div>
                 </div>
+                <form id="paymentForm"
+    method="POST"
+    action="https://YourServer/PathToExistingPaymentProcessingScript">
+    <input type="hidden" name="dataValue" id="dataValue" />
+    <input type="hidden" name="dataDescriptor" id="dataDescriptor" />
+    <button type="button"
+        class="AcceptUI"
+        data-billingAddressOptions='{"show":true, "required":false}' 
+        data-apiLoginID="9B6aH2dq" 
+        data-clientKey="3rYC8fQmrtqNws9UUXgK8jKQ468hS8uA6y3E964E95WwbtBEM5F3TZ7jtLKT8yHy"
+        data-acceptUIFormBtnTxt="Submit" 
+        data-acceptUIFormHeaderTxt="Card Information"
+        data-paymentOptions='{"showCreditCard": true, "showBankAccount": true}' 
+        data-responseHandler="responseHandler">Pay
+    </button>
+</form>
             </div>
         </section>
         <section class="form-section"  id="reference">
@@ -671,5 +687,26 @@
         </section>
         
     </form>
+</div>
+<div id="modal">
+    <div id="modal-content">
+    <div id="modal-close">X</div>
+        <form id="paymentForm"
+            method="POST"
+            action="https://YourServer/PathToExistingPaymentProcessingScript" >
+            <h3>Secure Payment</h3>
+            <div id="inputs">
+            <input type="text" name="firstName" id="firstName" placeholder="First Name *" required /> <br><br>
+            <input type="text" name="lastName" id="lastName" placeholder="First Name *" required /> <br><br>
+            <input type="text" name="cardNumber" id="cardNumber" placeholder="0000-0000-0000-0000 *" required/> <br><br>
+            <input type="text" name="expMonth" id="expMonth" placeholder="Month *" required/> <br><br>
+            <input type="text" name="expYear" id="expYear" placeholder="Year *" required/> <br><br>
+            <input type="text" name="cardCode" id="cardCode" placeholder="CVC *" required/> <br><br>
+            <input type="hidden" name="dataValue" id="dataValue" />
+            <input type="hidden" name="dataDescriptor" id="dataDescriptor" />
+            <button type="submit">Pay</button>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection
