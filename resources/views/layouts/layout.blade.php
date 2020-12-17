@@ -41,4 +41,5 @@ use App\Models\Contracts;
         {{-- <script type="text/javascript" src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"></script> --}}
         {{-- <script type="text/javascript" src="https://jstest.authorize.net/v3/AcceptUI.js" charset="utf-8"></script> --}}
     @endif
+
 </html>

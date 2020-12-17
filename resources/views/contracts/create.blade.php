@@ -1,5 +1,4 @@
 @extends('layouts.layout')
-
 @section('content')
 <div id="container">
     <h1>Create Contract</h1>
