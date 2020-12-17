@@ -2,9 +2,9 @@
                         
 <div class="control">
 
-    <select name="product_material">
+    <select name="product_material" required>
         @foreach($materials AS $material)
-            <option value="{{$material->material}}">{{$material->material}}</option>
+            <option value="{{$material->material}}" {{ old('product_material') == $material->material || $slot == $material->material ? 'selected='.'"'.'selected'.'"' : ''   }}>{{$material->material}}</option>
         @endforeach
     </select>
 

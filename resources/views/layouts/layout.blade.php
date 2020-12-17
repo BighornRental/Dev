@@ -11,12 +11,11 @@ use App\Models\Contracts;
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;0,900;1,300&display=swap" rel="stylesheet">
-        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=3.9" type="text/css" media="all" />
+        <link rel="stylesheet" id="tracker-css" href="/css/bhr.css?version=1.7" type="text/css" media="all" />
        
     </head>
     <body class="antialiased">
             <nav id="navbar">
-            
             <ul>
                 <li><a href="/"><img id="logo-branding" src="/img/Bighorn-Rental-Logo.png" rel="logo" height="80px" width="auto" v-align="top" alt="Bighorn Rental Logo" /></a> {{\Auth::user()->name ?? ''}}</li>
                 <li><a class="{{Request::is('/') ? 'current_page_link' : ''}}"" href="/">Home</a></li>
@@ -34,13 +33,12 @@ use App\Models\Contracts;
             <ul>
             </nav>
             @yield('content')
-
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    @if(url()->current() == 'https://com.bighornrental:8890/contracts/create')
-        <script src="/js/calculator.js?version=3.8"></script>
-        <script src="/js/bhr.js?version=0.2"></script>
+    <script src="/js/bhr.js?version=0.3"></script>
+    <script src="/js/calculator.js?version=4.5"></script>
+    @if(isset($customer->id) AND url()->current() == env('APP_URL').'contracts/'.$customer->id.'/create')
         {{-- <script type="text/javascript" src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"></script> --}}
-        <script type="text/javascript" src="https://jstest.authorize.net/v3/AcceptUI.js" charset="utf-8"></script>
+        {{-- <script type="text/javascript" src="https://jstest.authorize.net/v3/AcceptUI.js" charset="utf-8"></script> --}}
     @endif
 </html>

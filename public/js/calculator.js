@@ -20,16 +20,38 @@ function dm(amount)
 function calculate()
 {	 
 	// get input values from the form
-	var LoanTerm = $("#rto-terms").val(),
+	var LoanTerm = $("#rto_terms").val(),
 		TotalPrice = parseFloat($("#product_cash_price").val()),
 		DownPayment = $("#original_initial_payment").val(),
 		TaxRate = parseFloat($("#product_sales_tax").val()),
-		LDWMonthly = ($("input[name='liability_damage_waver']:checked").val() == "accept") ? 5.00 : 0.00,
+		LDWMonthly = 0.00,
 		DeliveryCharge = ($("#product_delivery_charge").val() > 0) ? parseFloat($("#product_delivery_charge").val()) : 0;
 		CustmerReserveAccount = ( $("#cra").val() > 0) ?  $("#cra").val() : 0
 		TotalIntialPayment = 0, // this is the final charges
-		CRA = 0;
-	
+		CRA = 0,
+		payoff = {
+			24: "70%",
+			36: "60%",
+			48: "50%",
+			60: "40%"
+		};
+
+	if( $("input[name='ldw']:checked").val() == '1') {
+
+		if(TotalPrice > 9999) {
+			LDWMonthly = 15.00;
+		}
+		else if(TotalPrice > 2999) {
+			LDWMonthly = 8.00;
+		}
+		else {
+			LDWMonthly = 5.00;
+		}
+	}
+	else {
+		LDWMonthly = 0.00
+	}	
+
 	// label term length
 	//$("#TermLength").html(LoanTerm);
 
@@ -65,16 +87,21 @@ function calculate()
 	TotalIntialPayment = Month1 * 2;
 	CRA = ( $("#cra").val() < 1) ? 0 : $("#cra").val();
 	TotalIntialPayment = TotalIntialPayment + DeliveryCharge + parseFloat(CRA);
+
+	//hidden inputs
+	$("#product_sales_tax_amount").val(TaxPayment);
+	$("#monthly_payment").val(EachPayment);
 	
 	//the inputs
 	$("#month1").val( Month1 * 2);
     $("#irp").val(dm(EachPayment*2));
-	$("#ist").val(TaxPayment * 2); 	
-	$("#ldw").val(dm(LDWMonthly*2));
+	$("#ist").val(dm(TaxPayment * 2)); 	
+	$("#ldw2").val(dm(LDWMonthly*2));
 	$("#cra").val(CRA);
 	$("#dc").val(DeliveryCharge);
-	$("#tip").val(TotalIntialPayment);
-	$("#initial-pay-athorization").val(TotalIntialPayment);
+	$("#tip").val(dm(TotalIntialPayment));
+	$("#initial-payment").attr("value", dm(TotalIntialPayment));
+	$('#ldw_monthly').val(dm(LDWMonthly));
 	// end inputs
 
 	// no cra row
@@ -93,7 +120,7 @@ function calculate()
 	$("#ContractTotal").text( dm(EachPayment * LoanTerm)); 	
 	$("#AgreeToTerms").text(LoanTerm);
 	po = (TotalPrice / (EachPayment * LoanTerm)) * 100;
-	$("#PayOff").text("%"+ Math.ceil(po));
+	$("#PayOff").text(payoff[LoanTerm]);
 	// end agree to terms row
 
     
@@ -117,15 +144,15 @@ function error(selector) {
 // }
     
 function reCalulatePayment() {
-    
+
     //example 1000
-    var capturedExtraDownPayment = $("#original_initial_payment").val();
-    
+	var capturedExtraDownPayment = parseFloat( $("#original_initial_payment").val() );
+	
     if(capturedExtraDownPayment > $("#product_cash_price").val()) {
         
         showRecalcError("Down payment cannot be greater than cash price.",false);
         
-        location.reload();
+        return false;
         
     }
     
@@ -164,18 +191,26 @@ function reCalulatePayment() {
 	
 	cra = parseFloat( $("#cra").val() );
 
-	if( (dp + mls) < capturedExtraDownPayment ) {
+	if( cra < capturedExtraDownPayment ) {
 		 $("#cra").val((cra + .01).toFixed(2));
 		 if($("#cra").val() < 0) {
 			$("#cra").val(0);
 		}
-	} else if( (dp + mls) > capturedExtraDownPayment ) {
+	} else if( cra > capturedExtraDownPayment ) {
 		$("#cra").val((cra - .01).toFixed(2));
 	}
 	else {
 		$("#cra").val(cra);
 	}
 	calculate();
+
+	$("#original_initial_payment").val( parseFloat($("#original_initial_payment").val()).toFixed(2) );
+
+	$("#calc_now").hide();
+
+	if( $("#initial_down_payment").val() != ( parseFloat($("#tip").val()) - $("#dc").val() ) ) {
+		alert('Please adjust the "Down Payment" using the plus and minus until the "Total Initial Payment" = the down payment amount.')
+	}
     //making sure the down payment is great than the initial payment
     if(dps < 0) {
         
@@ -200,7 +235,7 @@ function showRecalcError(message,shouldDo) {
 
 jQuery(function($) {
     
-    $("#rto-terms").on('change',function() {
+    $("#rto_terms").on('change',function() {
     	
         calculate();	
     });
@@ -229,12 +264,12 @@ jQuery(function($) {
 
     	calculate();
     });
-    $("#original_initial_payment").on('change',function() {
+    $("#original_initial_payment").on('click',function() {
 
-        calculate();	
+		calculate();	
     });
     $("#original_initial_payment").on('keyup',function() {
-		
+	
 		calculate();	
 	});
 	
@@ -244,22 +279,38 @@ jQuery(function($) {
 
 	});
 
-   $("input[name='liability_damage_waver']").on('change', function() {
-		
+   $("input[name='ldw']").on('change', function() {
+
 		calculate();
 
    }); 
+   $("#initial_down_payment").on("keyup", function() {
+
+		$("#original_initial_payment").val($(this).val() );
+
+   }); 
+	
+   $("#adjust_dp span").on('click', function() {
+	   console.log($(this).attr('rel'));
+		var adjusted = ( $(this).attr('rel') == "down" ) ? parseFloat($("#original_initial_payment").val()) - .01 : parseFloat( $("#original_initial_payment").val()) + .01;
+
+		$("#original_initial_payment").val(adjusted.toFixed(2));
+   });
    //calculate();
     
     $("#AdjDownPayment").on('click', function(event) { 
-       
+
 		event.preventDefault();
 
-		var oip = ( $("#original_initial_payment").val() < 1 )  ? 0 : $("#original_initial_payment").val();
-		
-		$("#original_initial_payment").val(oip);
-		
-		reCalulatePayment(); 
+		$("#calc_now").show( 100, function() {
+			
+			var oip = ( $("#original_initial_payment").val() < 1 )  ? 0 : $("#original_initial_payment").val();
+			
+			$("#original_initial_payment").val(oip);
+			
+			reCalulatePayment(); 
+
+		});
         
     } );
 }(jQuery));

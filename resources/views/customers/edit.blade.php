@@ -5,10 +5,9 @@
 <h1>Edit Customer</h1>
 
 <form method="POST" action="/customers/{{$customer->id}}">
-
 @csrf
-@method('PUT')
-
+@method('put')
+<input type="hidden" name="user_id" value="{{Auth::user()->id}}" />
 <div class="field">
 
     <label for="first_name">First Name:</label>
@@ -146,7 +145,11 @@
     
     <div class="control">
 
-        <input type="phone" id="secondary_phone" name="secondary_phone" value="{{$customer->secondary_phone}}" />
+        <input @error('secondary_phone') class="is-danger" @enderror  type="phone" id="secondary_phone" name="secondary_phone" value="{{$customer->secondary_phone}}" />
+
+        @error('secondary_phone')
+            <p class="help is-danger">{{ $errors->first('secondary_phone') }}</p>
+        @enderror
 
     </div>
 
@@ -176,5 +179,14 @@
 
 </div>
 </form>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 </div>
 @endsection

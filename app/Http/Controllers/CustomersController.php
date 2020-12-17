@@ -42,71 +42,45 @@ class CustomersController extends Controller
 
     public function store() {
 
-        // $validatedAttr = request()->validate([
-
-        //     'first_name' => 'required | string',
-        //     'last_name' => 'required | string',
-        //     'address' => 'required | string',
-        //     'city' => 'required | string',
-        //     'state' => 'required | max:2',
-        //     'postal_code' => 'required | digits:5',
-        //     'county' => 'required | string',
-        //     'country' => 'required | string',
-        //     'county' => 'required | string',
-        //     'phone' => 'required | regex:/^([0-9\s\-\+\(\)]*)$/ | min:10',
-        //     'email' => 'required| unique:customers',
-        //     'secondary_phone' => 'nullable | regex:/^([0-9\s\-\+\(\)]*)$/ | min:10'
-        // ]);
-       
+        
         //persist a customer
         Customers::create( $this->validateCustomer() );
-    
-
 
         return redirect('/customers');
     }
     
-    public function edit(customers $customer) {
+    public function edit(Customers $customer) {
 
         //show the customer to edit
-
+        
         return view('customers.edit', ['customer' => $customer]);
 
     }
 
-    public function update($id) {
+    public function update(Customers $customer) {
 
-        $customer = Customers::find($id);
-        $customer->update( $this->validateCustomer() );
-
-        return redirect('/customers');
+        $customer->update($this->validateCustomer());
+        return redirect()->route('customers');
 
     }
 
-    public function destroy() {
+    public function destroy(Customers $customer) {
 
         //delete the customer
+        $customer->delete();
+        return redirect()->route('customers');
 
     }
 
-    public function contracts() {
-
-        $customer = Customers::find($customer);
+    public function contracts($id) {
     
-        $contracts = $customer->contracts; // hasMany contracts
-        
+        $contracts = Contracts::find($id)->contracts(); // hasMany contracts
+     
         return view('contracts.index', ['contracts' => $contracts, 'customer' => $customer]);
     }
 
     protected function validateCustomer() {
 
-        
-        // Validator::make(request()->validate([
-        //     'email' => [
-        //         'required',
-        //         Rule::unique('customers')->ignore($customer->id),
-        //     ],
-        // ]));
         return request()->validate([
             'user_id' => 'required',
             'first_name' => 'required | string',
@@ -122,5 +96,6 @@ class CustomersController extends Controller
             'email' => 'required',
             'secondary_phone' => 'nullable | regex:/^([0-9\s\-\+\(\)]*)$/ | min:10',
         ]);
+
     }
 }

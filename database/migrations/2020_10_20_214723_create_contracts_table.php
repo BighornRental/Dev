@@ -14,9 +14,9 @@ class CreateContractsTable extends Migration
     public function up()
     {
         Schema::create('contracts', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id', 1000);
             $table->unsignedBigInteger('customers_id')->nullable();
-            $table->unsignedBigInteger('contract_number');
+            $table->string('contract_number');
             $table->string('dealer');
             $table->string('sales_person');
             $table->string('contract_state');
@@ -33,23 +33,25 @@ class CreateContractsTable extends Migration
             $table->string('product_material');
             $table->string('product_roof_material');
             $table->string('product_serial_number');
-            $table->string('product_cash_price');
-            $table->string('product_sales_tax');
-            $table->string('product_delivery_charge')->nullable();
+            $table->float('product_cash_price');
+            $table->float('product_sales_tax');
+            $table->float('product_sales_tax_amount');
+            $table->float('product_delivery_charge')->nullable();
             $table->string('product_side_color');
             $table->string('product_trim_color')->nullable();
             $table->string('product_roof_color');
             $table->string('product_condition');
-            $table->string('rto_terms');
+            $table->float('monthly_payment');
+            $table->integer('rto_terms');
             $table->date('delivery_date');
-            $table->boolean('LDW')->default(false);
-            $table->float('LDW-price');
-            $table->string('CRA_amount');
-            $table->float('inital_payment');
+            $table->boolean('ldw')->default(false);
+            $table->float('ldw_monthly');
+            $table->float('cra');
+            $table->float('initial_payment');
             $table->boolean('recurring_payment')->default(false);
-            $table->boolean('paperless_billing')->default(false);
+            $table->boolean('papperless_billing')->default(false);
             $table->boolean('signed')->default(false);
-            $table->boolean('intial_payment')->default(false);
+            $table->boolean('initial_payment_made')->default(false);
             $table->timestamps();
             $table->foreign('customers_id')->references('id')->on('customers')->onDelete('SET NULL');
         });

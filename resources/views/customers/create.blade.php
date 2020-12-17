@@ -5,7 +5,6 @@
 <h1>Create Customer</h1>
 
 <form method="POST" action="/customers">
-
 @csrf
  <input type="hidden" name="user_id" value="{{\Auth::user()->id}}" />
 <div class="field">

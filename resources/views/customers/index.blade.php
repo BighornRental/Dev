@@ -17,8 +17,8 @@
             <div style="flex-basis:20%"><a href="/customers/{{$customer->id}}">{{$customer->first_name}}</a></div>
             <div style="flex-basis:30%">{{$customer->email}}</div>
             <div style="flex-basis:25%">{{$customer->phone}}</div>
-            <div style="flex-basis:10%" align="center"><a class="circle-btn" href="\customers\{{$customer->id}}\contracts" title="Click To See Contracts">{{ App\Models\Contracts::where('customers_id', '=',$customer->id)->count()}}</a></div>
-            <div style="flex-basis:15%"><a href="/contracts/create">Create Contract</a></div>
+            <div style="flex-basis:10%" align="center"><a class="circle-btn" href="\contracts\{{$customer->id}}" title="Click To See Contracts">{{ App\Models\Contracts::where('customers_id', '=',$customer->id)->count()}}</a></div>
+            <div style="flex-basis:15%"><a href="/contracts/{{$customer->id}}/create">Create Contract</a></div>
         </div>
         @endforeach
     </div>
