@@ -38,6 +38,7 @@ Route::get('/contracts/{customer}/create', [ContractsController::class, 'create'
 Route::get('/contracts/{contract}/delete', [ContractsController::class, 'destory']);
 Route::get('/contracts/signPDF/{contract}', [SignPDFController::class, 'getPDF']);
 Route::get('/contracts/mailPDF/{contract}', [SignPDFController::class, 'mailPDF']);
+Route::get('/signedPDFs', [SignPDFController::class, 'signedPDF']);
 
 Auth::routes();
 

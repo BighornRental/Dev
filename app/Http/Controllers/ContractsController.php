@@ -69,19 +69,23 @@ class ContractsController extends Controller
         $contract->product_serial_number = ' ';
         $contract->product_cash_price = 0.00;
         $contract->product_sales_tax = 0.00;
-        $contract->product_sales_tax_amount = 0.00;
         $contract->product_delivery_charge = 0.00;
         $contract->product_side_color = ' ';
         $contract->product_trim_color = ' ';
         $contract->product_roof_color = ' ';
         $contract->product_condition = ' ';
-        $contract->monthly_payment = 0.00;
         $contract->rto_terms = '36';
         $contract->delivery_date = '2020-12-12';
         $contract->ldw = 0;
         $contract->ldw_monthly = 0.00;
         $contract->initial_down_payment = 0.00;
         $contract->original_initial_payment = 0.00;
+        $contract->no_cra_payment = 0.00;
+        $contract->no_cra_tax = 0.00;
+        $contract->no_cra_total = 0.00;
+        $contract->cra_payment = 0.00;
+        $contract->cra_tax = 0.00;
+        $contract->cra_total = 0.00;
         $contract->cra = 0.00;
         $contract->initial_payment = 0.00;
         $contract->initial_payment_type = '';
@@ -109,7 +113,7 @@ class ContractsController extends Controller
 
     public function update($contract_id) {
         //will update what comes from create
-        
+        //DD(request());
         $validated_data = request()->validate([
             'dealer' => 'required | string',
             'contract_number' => 'required | string',
@@ -138,7 +142,7 @@ class ContractsController extends Controller
             'rto_terms' => 'required | numeric',
             'product_serial_number' => 'required | string',
             'product_condition'  => 'required | string',
-            'product_condition_description' => 'exclude_unless:product_condtion,used | string',
+            'product_condition_description' => 'required_if:product_condtion,used | string',
             'product_cash_price' => 'required | numeric',
             'product_sales_tax' => 'required | numeric',
             'product_delivery_charge' => 'nullable | numeric',
@@ -147,12 +151,16 @@ class ContractsController extends Controller
             'ldw_monthly' => 'required_if:ldw_radio,1',
             'initial_down_payment' => 'nullable | numeric',
             'original_initial_payment' => 'nullable | numeric',
-            'cra' => 'required',
+            'no_cra_payment' => 'required | numeric',
+            'no_cra_tax' => 'nullable | numeric',
+            'no_cra_total' => 'required | numeric',
+            'cra_payment' => 'required | numeric',
+            'cra_tax' => 'required | numeric',
+            'cra_total' => 'required | numeric',
+            'cra' => 'required | numeric',
             'initial_payment' => 'required | numeric',
             'initial_payment_type' => 'required | string',
-            'recurring_payment' => 'boolean',
-            'recurring_payment_type' => 'exclude_unless:recurring_payment,1 | string',
-            'recurring_payment_date' => 'exclude_unless:recurring_payment,1 | numeric',
+            'recurring_payment' => 'required | numeric',
             'papperless_billing' => 'nullable | boolean',
             'signed' => 'nullable | boolean',
             'initial_payment_made' => 'nullable | boolean'

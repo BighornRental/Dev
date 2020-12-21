@@ -577,7 +577,8 @@
             <h3>Rental Payment</h3>
             <div class="inner-section">
                 <div class="form-row">
-                    <p>The monthly rental payment is  $<span id="payment-no-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra">0.00</span> for a total of  $<span id="no-ldw-total">0.00</span></p>
+                    <p>The monthly rental payment without CRA is  $<span id="payment-no-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra">0.00</span> for a total of  $<span id="no-ldw-total">0.00</span></p>
+                     <p>The monthly rental payment with CRA is  $<span id="payment-with-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-with-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-with-cra">0.00</span> for a total of  $<span id="with-ldw-total">0.00</span></p>
             </div>
         </section>
         <section class="form-section"  id="reference">

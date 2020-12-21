@@ -62,32 +62,38 @@ function calculate()
 	TaxRate = (TaxRate >= 1) ? TaxRate / 100 : 0;
 	
 	// calculate FullPrice (Labeled as "Contract Initial Total")
-	var FullPrice = ( !isNaN(TotalPrice) ) ? parseFloat( TotalPrice - CustmerReserveAccount ) : 0;
+	var FullPrice = ( !isNaN(TotalPrice) ) ? parseFloat( TotalPrice - CustmerReserveAccount ) : 0,
+		FullPriceNoCRA = TotalPrice;
 	
 	// calculate EachPayment
-	var EachPayment = 0;
-	if (LoanTerm == 24) { 
-		EachPayment = Math.round((FullPrice/17.0)*100)/100;
-	} else if (LoanTerm == 36) { 
-		EachPayment = Math.round((FullPrice/21.6)*100)/100;
-	} else if (LoanTerm == 48) {
-		EachPayment = Math.round((FullPrice/24.0)*100)/100;
-	} else if (LoanTerm == 60) {
-		EachPayment = Math.round((FullPrice/27.0)*100)/100;
-	} else {
-		alert("Unable to determine contract term!");
-		return;
-	}
-	
+	// var EachPayment = 0;
+	// if (LoanTerm == 24) { 
+	// 	EachPayment = Math.round((FullPrice/17.0)*100)/100;
+	// } else if (LoanTerm == 36) { 
+	// 	EachPayment = Math.round((FullPrice/21.6)*100)/100;
+	// } else if (LoanTerm == 48) {
+	// 	EachPayment = Math.round((FullPrice/24.0)*100)/100;
+	// } else if (LoanTerm == 60) {
+	// 	EachPayment = Math.round((FullPrice/27.0)*100)/100;
+	// } else {
+	// 	alert("Unable to determine contract term!");
+	// 	return;
+	// }
+	EachPayment = RTOTerms(LoanTerm, FullPrice);
+	EachPaymentNoCRA = RTOTerms(LoanTerm, FullPriceNoCRA);
 	// calculate tax
-	var TaxPayment = Math.round((eval(EachPayment)) * TaxRate*100)/100;
+	var TaxPayment = Math.round((eval(EachPayment)) * TaxRate*100)/100,
+		TaxPaymentNoCRA = Math.round((eval(EachPaymentNoCRA)) * TaxRate*100)/100;
 	
 	Month1 = (EachPayment + TaxPayment);
+	Month1NoCRA = (EachPaymentNoCRA + TaxPaymentNoCRA)
 	Month1 = Month1 + LDWMonthly;
+	Month1NoCRA = Month1NoCRA + LDWMonthly;
 	TotalIntialPayment = Month1 * 2;
 	CRA = ( $("#cra").val() < 1) ? 0 : $("#cra").val();
 	TotalIntialPayment = TotalIntialPayment + DeliveryCharge + parseFloat(CRA);
 
+	$("#total-no-cra").text(FullPriceNoCRA + " " + EachPaymentNoCRA + " " + TaxPaymentNoCRA);
 	//hidden inputs
 	$("#product_sales_tax_amount").val(TaxPayment);
 	$("#monthly_payment").val(EachPayment);
@@ -98,22 +104,32 @@ function calculate()
 	$("#ist").val(dm(TaxPayment * 2)); 	
 	$("#ldw2").val(dm(LDWMonthly*2));
 	$("#cra").val(CRA);
-	$("#dc").val(DeliveryCharge);
+	$("#dc").val(dm(DeliveryCharge));
 	$("#tip").val(dm(TotalIntialPayment));
 	$("#initial-payment").attr("value", dm(TotalIntialPayment));
-	$('#ldw_monthly').val(dm(LDWMonthly));
+	$("#ldw_monthly").val(dm(LDWMonthly));
+	$("#no-cra-payment").val(dm(EachPaymentNoCRA));
+	$("#no-cra-tax").val(dm(TaxPaymentNoCRA));
+	$("#no-cra-total").val(dm(Month1NoCRA));
+	$("#cra-payment").val(dm(EachPayment));
+	$("#cra-tax").val(dm(TaxPayment));
+	$("#cra-total").val(dm(Month1));
 	// end inputs
 
 	// no cra row
-	$("#payment-no-cra").text(dm(EachPayment)); 	
-	$(".tax-cra").text(TaxPayment);
+	$("#payment-no-cra").text(dm(EachPaymentNoCRA)); 	
+	$(".tax-cra").text(dm(TaxPaymentNoCRA));
 	$(".ldw-cra").text(dm(LDWMonthly));
-	$("#no-ldw-total").text(dm(Month1));
+	$("#no-ldw-total").text(dm(Month1NoCRA));
 	// end no cra row
 
 	// yes cra row
 	$("#payment-yes-cra").text(dm(EachPayment));
 	$("#yes-ldw-total").text(dm(Month1));
+	$("#payment-with-cra").text(dm(EachPayment)); 
+	$(".tax-with-cra").text(dm(TaxPayment));	
+	$(".ldw-with-cra").text(dm(LDWMonthly));
+	$("#with-ldw-total").text(dm(Month1));
 	// yes cra row end
 
 	// agree to terms row
@@ -142,6 +158,24 @@ function error(selector) {
 // 	return !isNaN(parseFloat(val)) && isFinite(val);
 	
 // }
+
+function RTOTerms(LoanTerm, FullPrice) {
+
+	var EachPayment = 0;
+	if (LoanTerm == 24) { 
+		EachPayment = Math.round((FullPrice/17.0)*100)/100;
+	} else if (LoanTerm == 36) { 
+		EachPayment = Math.round((FullPrice/21.6)*100)/100;
+	} else if (LoanTerm == 48) {
+		EachPayment = Math.round((FullPrice/24.0)*100)/100;
+	} else if (LoanTerm == 60) {
+		EachPayment = Math.round((FullPrice/27.0)*100)/100;
+	} else {
+		alert("Unable to determine contract term!");
+		return;
+	}
+	return EachPayment;
+}
     
 function reCalulatePayment() {
 
@@ -187,7 +221,6 @@ function reCalulatePayment() {
     }
 
 	while( (dp + mls) > capturedExtraDownPayment );
-   // while( dp > 998 );
 	
 	cra = parseFloat( $("#cra").val() );
 
@@ -209,7 +242,7 @@ function reCalulatePayment() {
 	$("#calc_now").hide();
 
 	if( $("#initial_down_payment").val() != ( parseFloat($("#tip").val()) - $("#dc").val() ) ) {
-		alert('Please adjust the "Down Payment" using the plus and minus until the "Total Initial Payment" = the down payment amount.')
+		alert('Please adjust the "Down Payment" (CRA). The "Down Payment" (CRA) may be less than the initial payment. Try using the plus and minus until the "Total Initial Payment" = the "Down Payment" (CRA) amount.')
 	}
     //making sure the down payment is great than the initial payment
     if(dps < 0) {
@@ -291,7 +324,7 @@ jQuery(function($) {
    }); 
 	
    $("#adjust_dp span").on('click', function() {
-	   console.log($(this).attr('rel'));
+
 		var adjusted = ( $(this).attr('rel') == "down" ) ? parseFloat($("#original_initial_payment").val()) - .01 : parseFloat( $("#original_initial_payment").val()) + .01;
 
 		$("#original_initial_payment").val(adjusted.toFixed(2));

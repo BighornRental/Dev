@@ -129,6 +129,7 @@
 
                     </div>  
                 </div>
+                    <p>Text a photo of customers driver&rsquo;s license to <a href="tel:+{{$company->cell_SMS}}" rel="phone">{{$company->cell_SMS}}</a> or email to <a href="mailto:{{$company->email}}" rel="email">{{$company->email}}</a></p>
             </div>
         </section>
         <section class="form-section"  id="shipping_address">
@@ -405,7 +406,7 @@
                         
                         <div class="control radio-control">
 
-                            <label class="input-container">New Condition:
+                            <label class="input-container">New Condition: {{ old('product_condition')}}
                                 <input type="radio" name="product_condition" id="condition-new" value="new" {{ old('product_condition')=="new" || $contract->product_condition == 'new' ? 'checked='.'"'.'checked'.'"' : '' }} required />
                                 <span class="checkmark cm-round"></span>
                             </label>
@@ -570,18 +571,18 @@
                 <div class="inner-section">
                     <div class="form-row">
                         <div class="field">
-                            <label for="initial_down_payment">Enter Down Payment: </label> 
+                            <label for="initial_down_payment">Enter Down Payment (CRA): </label> 
                             <div class="control">
                                 <input type="text" name="initial_down_payment" id="initial_down_payment" value=""/>
                             </div>
                         </div>
                         <div class="field">
-                            <p>The &ldquo;Adjusted Down Payment&rdquo; is used to adjust the &ldquo;Down Payment&rdquo; so that the &ldquo;Total Initial Payment&rdquo; and the &ldquo;Down Payment&rdquo; are equal.<p>
+                            <p>The &ldquo;Adjusted Down Payment&rdquo; is used to adjust the &ldquo;Down Payment&rdquo;  (CRA) so that the &ldquo;Total Initial Payment&rdquo; and the &ldquo;Down Payment&rdquo; are equal.<p>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="field">
-                            <label for="original_initial_payment">Adjusted Down Payment: </label> 
+                            <label for="original_initial_payment">Adjusted Down Payment  (CRA): </label> 
                             <div class="control">
                                 <input type="text" name="original_initial_payment" id="original_initial_payment" value="{{old('original_initial_payment')}}"/> <span id="adjust_dp"><span rel="down">-</span> <span rel="up">+</span></span>
                             </div>
@@ -599,7 +600,14 @@
             <h3>Rental Payment</h3>
             <div class="inner-section">
                 <div class="form-row">
-                    <p>The monthly rental payment is  $<span id="payment-no-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra">0.00</span> for a total of  $<span id="no-ldw-total">0.00</span></p>
+                    <input type="hidden" name="no_cra_payment" id="no-cra-payment" />
+                    <input type="hidden" name="no_cra_tax" id="no-cra-tax" />
+                    <input type="hidden" name="no_cra_total" id="no-cra-total" />
+                    <p>The monthly rental payment <b>without CRA</b> is  $<span id="payment-no-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-cra">0.00</span> for a total of  $<span id="no-ldw-total">0.00</span></p>
+                    <input type="hidden" name="cra_payment" id="cra-payment" />
+                    <input type="hidden" name="cra_tax" id="cra-tax" />
+                    <input type="hidden" name="cra_total" id="cra-total" />
+                    <p>The monthly rental payment <b>with CRA</b> is  $<span id="payment-with-cra">0.00</span> plus a monthly sales tax of  $<span class="tax-with-cra">0.00</span> plus optional Liability Damage Waiver fee of   $<span class="ldw-with-cra">0.00</span> for a total of  $<span id="with-ldw-total">0.00</span></p>
             </div>
         </section>
         <section class="form-section"  id="reference">
@@ -665,11 +673,24 @@
             <h3>Recurring Payment Authorization</h3>
             <div class="inner-section">
                 <div class="form-row">
-                    <div class="field">
-                        <label class="input-container">Would you like to sign up for recurring payments?
-                            <input type="checkbox" name="recurring_payment" id="recurring_payment" value="1" {{ old('recurring_payment') == "1" || $contract->recurring_payment == 1 ? 'checked' : '' }} />
-                            <span class="checkmark"></span>
-                        </label>
+                <div class="field">
+                <p>Would you like to sign up for recurring billing? {{old('recurring_payment')}}</p>
+                <div class="control radio-control">
+
+                            <label class="input-container">Yes:
+                                <input type="radio" name="recurring_payment" id="recurring_payment_yes" value="1" {{ old('recurring_payment')=="new" || $contract->recurring_payment == 1 ? 'checked='.'"'.'checked'.'"' : '' }} required />
+                                <span class="checkmark cm-round"></span>
+                            </label>
+                        </div>
+
+                        <div class="control radio-control">
+
+                            <label class="input-container">No:
+                                <input type="radio" name="recurring_payment" id="recurring_payment_no" value="0" {{ old('recurring_payment')=="used"  || $contract->recurring_payment == 0 ? 'checked='.'"'.'checked'.'"' : '' }} />
+                                <span class="checkmark cm-round"></span>
+                            </label>
+
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">
@@ -677,8 +698,8 @@
                         <label for="recurring-payment-type">Payment Type:</label>
                         <select name="recurring_payment_type" id="recurring_payment_type">
                             <option value="">Select Payment Type</option>
-                            <option value="cc" {{ old('recurring_payment_type') == "cc" || $contract->recurring_payment_type == 'cc' ? 'selected' : '' }}>Credit Card</option>
-                            <option value="ach" {{ old('recurring_payment_type') == "ach" || $contract->recurring_payment_type == 'ach' ? 'selected' : '' }}>ACH Check</option>
+                            <option value="CC" {{ old('recurring_payment_type') == "cc" || $contract->recurring_payment_type == 'cc' ? 'selected' : '' }}>Credit Card</option>
+                            <option value="ACH" {{ old('recurring_payment_type') == "ach" || $contract->recurring_payment_type == 'ach' ? 'selected' : '' }}>ACH Check</option>
                         </select>
                     </div>
                     <div class="field">
@@ -700,7 +721,6 @@
             <div class="inner-section">
                 <div class="form-row">
                     <div class="field">
-                    Old is {{old('papperless_billing')}} and contract is {{$contract->papperless_billing}}
                         <label class="input-container">Yes Please:
                         {{-- if there is an old the use that if not use contract --}}
                             <input @error('papperless_billing') class="is-danger" @enderror type="radio" name="papperless_billing" id="papperless-billing-yes" value="1" @if( old('papperless_billing') == '1' ) checked="checked" @elseif( $contract->papperless_billing == 1) checked="checked"  @endif required/>

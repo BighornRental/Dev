@@ -19,34 +19,52 @@ use Illuminate\Http\Request;
 class SignPDFController extends Controller
  {
 
+	private $client;
+
     public function __construct() {
+
+			$this->client = new DigiSignerClient('51c67a13-d31a-45ef-a5a8-569047a5616f'); 
 
 	}
 
 	public function getPDF($contract) {
 
-		$contract = Contracts::findOrFail($contract,);
+		$contract = Contracts::findOrFail($contract);
 
-		$signDocumentUrl = $this->doPDF($contract,'embed', '890f33bc-9874-4b01-b326-16c9d98547ac');
+		$contract_number = ($contract->pdf_contract_number == null) ? '890f33bc-9874-4b01-b326-16c9d98547ac' : $contract->pdf_contract_number; 
 
-		return view('DigiSigner.show', ['url' => $signDocumentUrl]);
+		$signDocument = $this->doPDF($contract,'embed', $contract_number);
+
+		$contract->update(['pdf_contract_number' => $signDocument['id']]);
+
+		return view('DigiSigner.show', ['url' => $signDocument['url'] ]);
 
 	}
 
 	public function mailPDF($contract) {
 
-		$contract = Contracts::findOrFail($contract,);
+		$contract = Contracts::findOrFail($contract);
 
-		$signDocumentUrl = $this->doPDF($contract,'mail', '890f33bc-9874-4b01-b326-16c9d98547ac');
+		$contract_number = ($contract->pdf_contract_number == null) ? '890f33bc-9874-4b01-b326-16c9d98547ac' : $contract->pdf_contract_number;
 
-		return view('DigiSigner.mailed', ['contract' => $contract]);
+		$signDocument = $this->doPDF($contract,'mail', $contract_number);
 
+		$contract->update(['pdf_contract_number' => $signDocument['id']]);
+
+		return view('DigiSigner.show', ['url' => $signDocument['url'] ]);
+
+	}
+
+	public function signedPDF() {
+
+		DD('signed');
+		
 	}
 	
 	public function doPDF($contract,$request_type,$template) {
 
 		$customer = Customers::findOrFail($contract->customers_id);
-		$client = new DigiSignerClient('51c67a13-d31a-45ef-a5a8-569047a5616f'); 
+		//$client = new DigiSignerClient('51c67a13-d31a-45ef-a5a8-569047a5616f'); 
 		$request = new SignatureRequest;
 		
 		$setTo = ($request_type == 'embed') ? array(true,false) : array(false,true);
@@ -167,7 +185,7 @@ class SignPDFController extends Controller
 		$product_cash_price->setContent( number_format($contract->product_cash_price,'2','.',',') );
 		$signer->addExistingField($product_cash_price);
 
-		$condition = ($contract->product_condition == "new") ? array(true,false) : array(false, true);
+		$condition = ($contract->product_condition == "new") ? array('Y','N') : array('N', 'Y');
 
 		$product_condition_new = new ExistingField('febaba45-4641-4e2c-8f1d-b3a0d1e657fc');
 		$product_condition_new->setContent( $condition[0] );
@@ -186,17 +204,158 @@ class SignPDFController extends Controller
 		$signer->addExistingField($rto_terms);
 
 		$cra = new ExistingField('c0434e21-6a53-46db-a4fe-27d2d9f256d2');
+		$cra->setContent( number_format($contract->Initial_down_payment, 2, '.',','));
+		$signer->addExistingField($cra);
+
+		$no_cra_payment = new ExistingField('445cbea0-bd24-43ef-9116-cbe539ea8ee4');
+		$no_cra_payment->setContent( number_format($contract->no_cra_payment, 2, '.',','));
+		$signer->addExistingField($no_cra_payment);
+
+		$no_cra_tax = new ExistingField('e4d7ce53-78e2-444b-ac7b-b6380e9649df');
+		$no_cra_tax->setContent( number_format($contract->no_cra_tax, 2, '.',','));
+		$signer->addExistingField($no_cra_tax);
+
+		$ldw_monthly = new ExistingField('dcbcb14a-492c-4386-ad12-85fae752af53');
+		$ldw_monthly->setContent( number_format($contract->ldw_monthly, 2, '.',','));
+		$signer->addExistingField($ldw_monthly);
+
+		$no_cra_total = new ExistingField('fed65d3a-0920-4804-9ba5-f94f4c292fc9');
+		$no_cra_total->setContent( number_format($contract->no_cra_total, 2, '.',','));
+		$signer->addExistingField($no_cra_total);
+
+		$cra_payment = new ExistingField('c8ddc3e3-4c80-46b3-939a-bc8f33189d1e');
+		$cra_payment->setContent( number_format($contract->cra_payment, 2, '.',','));
+		$signer->addExistingField($cra_payment);
+
+		$cra_tax = new ExistingField('6e510bb2-648c-405d-8808-45211699d8fc');
+		$cra_tax->setContent( number_format($contract->cra_tax, 2, '.',','));
+		$signer->addExistingField($cra_tax);
+
+		$ldw_monthly = new ExistingField('9ba202f6-692d-4753-858e-37f538cbaa30');
+		$ldw_monthly->setContent( number_format($contract->ldw_monthly, 2, '.',','));
+		$signer->addExistingField($ldw_monthly);
+
+		$cra_total = new ExistingField('d083be21-a2bd-4b81-a1c7-d972cd615eba');
+		$cra_total->setContent( number_format($contract->cra_total, 2, '.',','));
+		$signer->addExistingField($cra_total);
+
+		$ldw = ($contract->ldw == 1) ? 'Accept' : "Decline";
+
+		$ldw_agreement = new ExistingField('228d1003-c5ae-44f2-bfb3-4692053bffa5');
+		$ldw_agreement->setContent( $ldw );
+		$signer->addExistingField($ldw_agreement);
+
+		$ldw_monthly = new ExistingField('147c19a4-6ddd-43b2-a84e-11285672109b');
+		$ldw_monthly->setContent( number_format($contract->ldw_monthly, 2, '.',','));
+		$signer->addExistingField($ldw_monthly);
+
+		$initial_rental_payment = new ExistingField('d5cfcd6c-527a-4acf-91ae-68f5f1e0f777');
+		$initial_rental_payment->setContent( number_format($contract->cra_total * 2, 2, '.',','));
+		$signer->addExistingField($initial_rental_payment);
+
+		$initial_sales_tax = new ExistingField('5dd7bf85-b3d6-4da9-b846-25561fc1ced6');
+		$initial_sales_tax->setContent( number_format($contract->cra_tax * 2, 2, '.',','));
+		$signer->addExistingField($initial_sales_tax);
+
+		$initial_ldw = new ExistingField('42b1d15d-4faa-4716-8c29-14b8f4b7ada7');
+		$initial_ldw->setContent( number_format($contract->ldw * 2, 2, '.',','));
+		$signer->addExistingField($initial_ldw);
+
+		$cra = new ExistingField('db2514fd-6d8f-4110-9c8d-fc56d195d356');
 		$cra->setContent( number_format($contract->cra, 2, '.',','));
 		$signer->addExistingField($cra);
 
-		$response = $client->sendSignatureRequest($request);
+		$product_delivery_charge = new ExistingField('4f01878b-c82b-4677-8b9e-148e14f92fb5');
+		$product_delivery_charge->setContent( number_format($contract->product_delivery_charge, 2, '.',','));
+		$signer->addExistingField($product_delivery_charge);
+
+		$initial_payment = new ExistingField('26b7b4b0-cbca-4a58-a405-7136b7a8741b');
+		$initial_payment->setContent( number_format($contract->initial_payment, 2, '.',','));
+		$signer->addExistingField($initial_payment);
+
+		$rto_terms_2 = new ExistingField('491e8f01-4eac-40a1-8d3a-1e921b18e637');
+		$rto_terms_2->setContent( $contract->rto_terms );
+		$signer->addExistingField($rto_terms_2);
+
+		$paid_total = new ExistingField('6d1c8350-e02e-4ea5-8603-512f1173afb7');
+		$paid_total->setContent( number_format( $contract->cra_total * $contract->rto_terms,'2','.',',') );
+		$signer->addExistingField($paid_total);
+
+		$payoff_percentage = array('24'=>'70','36'=>'60','48'=>'50');
+
+		$percent_payoff = new ExistingField('c1eefb0c-1f45-4d24-a5cd-3eba8e408129');
+		$percent_payoff->setContent( $payoff_percentage[$contract->rto_terms] );
+		$signer->addExistingField($percent_payoff);
+
+		$dealer = new ExistingField('9e9f1d88-e3d1-44f6-87fc-ca7a8238808a');
+		$dealer->setContent( $contract->dealer );
+		$signer->addExistingField($dealer);
+
+		$delivery_date = new ExistingField('b3d94eb5-0f55-4a84-964e-7cf591d3261f');
+		$delivery_date->setContent( $contract->delivery_date );
+		$signer->addExistingField($delivery_date);
+
+		$IP_tip = new ExistingField('9f97cfe1-e5f2-48e0-92d6-5d5ee0970d35');
+		$IP_tip->setContent( number_format($contract->initial_payment, 2, '.',',') );
+		$signer->addExistingField($IP_tip);
+
+		$IP_at = new ExistingField('82a85fce-f480-4dfb-bc26-f58f6226b0c4');
+		$IP_at->setContent( strtoupper($contract->initial_payment_type) );
+		$signer->addExistingField($IP_at);
+
+		$RP_boolean = ($contract->recurring_payment == 1) ? true : false;
+
+		$RP_name_var = ($RP_boolean) ? $contract->customer_name : 'N/A';
+		$RP_name = new ExistingField('ba2bc2ce-a527-4696-a2c6-0ab81835cc7f');
+		$RP_name->setContent( $RP_name_var );
+		$signer->addExistingField($RP_name);
+
+		$RP_total_var = ($RP_boolean) ? $contract->no_cra_total : 'N/A';
+		$RP_total_var = ( $contract->original_initial_payment != null ) ? $contract->cra_total : $RP_total_var;
+		$RP_total = new ExistingField('0b4f2cc7-c0c7-413f-a66d-b155b453cde1');
+		$RP_total->setContent( $RP_total_var );
+		$signer->addExistingField($RP_total);
+
+		$recurring_payment_date_var = ($RP_boolean) ? $contract->recurring_payment_date : 'N/A' ;
+		$recurring_payment_date = new ExistingField('8a84a21d-829a-4679-b2be-3ef63a07a939');
+		$recurring_payment_date->setContent( $recurring_payment_date_var );
+		$signer->addExistingField($recurring_payment_date);
+
+		$recurring_payment_address_var = ($RP_boolean) ? $customer->address : 'N/A' ;
+		$recurring_payment = new ExistingField('f13634e5-511e-4a60-b217-184d9560f45d');
+		$recurring_payment->setContent( $recurring_payment_address_var );
+		$signer->addExistingField($recurring_payment);
+
+		$recurring_payment_city_var = ($RP_boolean) ? $customer->city.', '.$customer->state.' '.$customer->postal_code : 'N/A' ;
+		$ecurring_payment_city = new ExistingField('83a8ced6-6bca-4d5d-8c2c-34538699c224');
+		$ecurring_payment_city->setContent( $recurring_payment_city_var );
+		$signer->addExistingField($ecurring_payment_city);
+
+		$recurring_payment_phone_var = ($RP_boolean) ? $customer->phone : 'N/A' ;
+		$recurring_payment_phone = new ExistingField('3feea1c2-e02a-4b33-8054-22df814f1f76');
+		$recurring_payment_phone->setContent( $recurring_payment_phone_var );
+		$signer->addExistingField($recurring_payment_phone);
+
+		$recurring_payment_email_var = ($RP_boolean) ? $customer->email : 'N/A' ;
+		$recurring_payment_email = new ExistingField('f720b366-de94-4961-877a-90d6f2f19c76');
+		$recurring_payment_email->setContent( $recurring_payment_email_var );
+		$signer->addExistingField($recurring_payment_email);
+
+		$paperless_billing_var = ($contract->papperless_billing == 1) ? 'Y' : 'N' ;
+		$paperless_billing = new ExistingField('482f773a-2d3e-4274-b5b3-7f5f502c58ba');
+		$paperless_billing->setContent( $paperless_billing_var );
+		$signer->addExistingField($paperless_billing);
+
+		$response = $this->client->sendSignatureRequest($request);
 
 		foreach($response->getDocuments() as $document) {
+			$document_id = $document->getID();
 			foreach($document->getSigners() as $signer) {
 				$signDocumentUrl = $signer->getSignDocumentUrl();
 			}
 		}
-		return $signDocumentUrl;
+
+		return array('url'=>$signDocumentUrl,'id' => $document_id);
 	}
 
 	public function signerInitials( $name ) {

@@ -35,8 +35,8 @@ use App\Models\Contracts;
             @yield('content')
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/js/bhr.js?version=0.3"></script>
-    <script src="/js/calculator.js?version=4.5"></script>
+    <script src="/js/bhr.js?version=0.4"></script>
+    <script src="/js/calculator.js?version=4.7"></script>
     @if(isset($customer->id) AND url()->current() == env('APP_URL').'contracts/'.$customer->id.'/create')
         {{-- <script type="text/javascript" src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"></script> --}}
         {{-- <script type="text/javascript" src="https://jstest.authorize.net/v3/AcceptUI.js" charset="utf-8"></script> --}}
